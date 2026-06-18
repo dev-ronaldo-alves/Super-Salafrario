@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>Fase 1 - Campo Verde (com áudio personalizado)</title>
+    <title>Fase 1 - Campo Verde</title>
     <style>
-        /* ===== ESTILOS OTIMIZADOS PARA MOBILE (mesmos) ===== */
+        /* Reset e base */
         * {
             margin: 0;
             padding: 0;
@@ -13,8 +13,7 @@
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
-        html,
-        body {
+        html, body {
             width: 100%;
             height: 100%;
             overflow: hidden;
@@ -29,7 +28,7 @@
             height: 100vh;
             max-width: 100%;
             max-height: 100%;
-            background: #16213e;
+            background: #0b0b1a;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -41,16 +40,53 @@
             display: block;
             background: #87CEEB;
             image-rendering: pixelated;
-            width: 100%;
-            height: auto;
             max-width: 100%;
             max-height: 100%;
+            width: auto;
+            height: auto;
             aspect-ratio: 900 / 500;
             touch-action: none;
             border-radius: 8px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
             flex-shrink: 0;
+            /* centralização via flex do wrapper */
         }
+
+        /* Overlay de toque para iniciar */
+        .start-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            color: #fff;
+            font-size: 6vmin;
+            font-weight: bold;
+            text-align: center;
+            backdrop-filter: blur(6px);
+            cursor: pointer;
+            touch-action: manipulation;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .start-overlay span {
+            background: rgba(255, 215, 0, 0.15);
+            padding: 12px 30px;
+            border-radius: 60px;
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
+        }
+        .start-overlay small {
+            font-size: 3vmin;
+            opacity: 0.7;
+        }
+
+        /* Controles */
         .controls-overlay {
             position: absolute;
             top: 0;
@@ -65,43 +101,44 @@
             position: absolute;
             bottom: 3%;
             left: 3%;
-            width: 42vmin;
-            height: 42vmin;
-            max-width: 220px;
-            max-height: 220px;
+            width: 44vmin;
+            height: 44vmin;
+            max-width: 240px;
+            max-height: 240px;
             pointer-events: auto;
             touch-action: none;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr);
             gap: 6px;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.45);
             border-radius: 20px;
             padding: 8px;
             backdrop-filter: blur(8px);
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
         }
         .dpad-btn {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.18);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 6vmin;
+            font-size: 7vmin;
             color: rgba(255, 255, 255, 0.9);
             font-weight: bold;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
             transition: all 0.05s;
             touch-action: none;
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.3);
+            min-height: 44px;
+            min-width: 44px;
         }
-        .dpad-btn:active,
-        .dpad-btn.active {
-            background: rgba(255, 255, 255, 0.5);
-            transform: scale(0.90);
+        .dpad-btn:active, .dpad-btn.active {
+            background: rgba(255, 255, 255, 0.45);
+            transform: scale(0.88);
             border-color: rgba(255, 255, 255, 0.5);
             box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2);
         }
@@ -127,10 +164,10 @@
             align-items: flex-end;
         }
         .btn-action {
-            width: 24vmin;
-            height: 24vmin;
-            max-width: 130px;
-            max-height: 130px;
+            width: 26vmin;
+            height: 26vmin;
+            max-width: 140px;
+            max-height: 140px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -145,37 +182,34 @@
             touch-action: none;
             cursor: pointer;
             -webkit-touch-callout: none;
+            min-width: 60px;
+            min-height: 60px;
         }
-        .btn-action:active,
-        .btn-action.active {
+        .btn-action:active, .btn-action.active {
             transform: translateY(4px);
             box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.2);
         }
         .btn-a {
             background: radial-gradient(circle at 30% 30%, #ff6b6b, #c0392b);
             border-color: #ff9a9a;
-            font-size: 6vmin;
         }
         .btn-b {
             background: radial-gradient(circle at 30% 30%, #6bcfff, #2980b9);
             border-color: #9ad4ff;
-            font-size: 6vmin;
-            width: 20vmin;
-            height: 20vmin;
-            max-width: 110px;
-            max-height: 110px;
+            width: 22vmin;
+            height: 22vmin;
+            max-width: 120px;
+            max-height: 120px;
         }
 
-        .btn-back,
-        .btn-restart,
-        .btn-sound,
-        .btn-pause {
+        /* Botões superiores */
+        .btn-back, .btn-restart, .btn-sound, .btn-pause {
             position: absolute;
             top: 2%;
             pointer-events: auto;
             background: rgba(0, 0, 0, 0.55);
             color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             padding: 8px 14px;
             border-radius: 30px;
             font-size: 2.8vmin;
@@ -190,16 +224,14 @@
             gap: 6px;
             min-width: 48px;
             justify-content: center;
+            min-height: 40px;
         }
         .btn-back { left: 2%; }
         .btn-sound { left: 18%; }
         .btn-pause { left: 34%; }
         .btn-restart { right: 2%; }
 
-        .btn-back:active,
-        .btn-restart:active,
-        .btn-sound:active,
-        .btn-pause:active {
+        .btn-back:active, .btn-restart:active, .btn-sound:active, .btn-pause:active {
             background: rgba(255, 255, 255, 0.25);
             transform: scale(0.92);
         }
@@ -220,11 +252,12 @@
             flex-wrap: wrap;
             gap: 2px 8px;
             z-index: 5;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.25);
             padding: 4px 12px;
             border-radius: 30px;
             backdrop-filter: blur(4px);
             border: 1px solid rgba(255,255,255,0.05);
+            pointer-events: none;
         }
         .ui-top .score { color: #ffd700; }
         .ui-top .lives { color: #ff6b6b; }
@@ -262,39 +295,39 @@
 
         @media (max-width: 480px) {
             .dpad {
-                width: 38vmin;
-                height: 38vmin;
+                width: 40vmin;
+                height: 40vmin;
                 gap: 4px;
                 padding: 5px;
             }
-            .dpad-btn { font-size: 5vmin; }
+            .dpad-btn { font-size: 6vmin; min-height: 38px; min-width: 38px; }
             .btn-action {
-                width: 20vmin;
-                height: 20vmin;
+                width: 22vmin;
+                height: 22vmin;
                 font-size: 5vmin;
+                min-height: 50px;
+                min-width: 50px;
             }
             .btn-b {
-                width: 17vmin;
-                height: 17vmin;
+                width: 18vmin;
+                height: 18vmin;
                 font-size: 5vmin;
+                min-height: 44px;
+                min-width: 44px;
             }
             .ui-top { font-size: 2.2vmin; padding: 2px 8px; }
             .btn-back, .btn-restart, .btn-sound, .btn-pause {
                 font-size: 2.2vmin;
                 padding: 4px 10px;
-                min-width: 40px;
+                min-width: 36px;
+                min-height: 32px;
             }
         }
 
         .controls-overlay * {
             touch-action: none;
         }
-        .dpad-btn,
-        .btn-action,
-        .btn-restart,
-        .btn-sound,
-        .btn-back,
-        .btn-pause {
+        .dpad-btn, .btn-action, .btn-restart, .btn-sound, .btn-back, .btn-pause {
             -webkit-touch-callout: none;
         }
 
@@ -316,6 +349,11 @@
 
 <div class="game-wrapper" id="gameWrapper">
     <canvas id="gameCanvas" width="900" height="500"></canvas>
+
+    <div class="start-overlay" id="startOverlay">
+        <span>🎮 TOQUE PARA JOGAR</span>
+        <small>Áudio será ativado</small>
+    </div>
 
     <div class="ui-top" id="uiTop">
         <span class="score">🏆 <span id="scoreDisplay">0</span></span>
@@ -355,14 +393,12 @@
 
 <script>
     // ================================================================
-    //  CONFIGURAÇÃO DE ÁUDIO PERSONALIZADA (igual à Fase 2)
-    //  ================================================================
-    //  Preencha as URLs abaixo com os caminhos para seus próprios arquivos de áudio.
-    //  Deixe como null para usar os sons sintéticos padrão.
-    //  Formato suportado: MP3, WAV, OGG (qualquer formato que o navegador suporte via Web Audio).
-    //  A música será reproduzida em loop.
+    //  CONFIGURAÇÃO DE ÁUDIO PERSONALIZADA
+    //  Preencha as URLs abaixo com seus próprios arquivos (MP3, WAV, OGG)
+    //  Deixe como null para sons sintéticos.
+    // ================================================================
     const SOUND_CONFIG = {
-        jump: null,        // ex: 'sounds/jump.mp3'
+        jump: null,
         shoot: null,
         squish: null,
         powerup: null,
@@ -375,29 +411,27 @@
         star: null,
         cape: null,
         checkpoint: null,
-        music: './assets/sound/music1.mp3',       // música de fundo (loop)
+        music: null,   // ex: './assets/sound/music1.mp3'
         volume: 0.3,
-        musicVolume: 1.0
+        musicVolume: 0.5
     };
 
     // ================================================================
-    //  SISTEMA DE ÁUDIO (com suporte a arquivos externos + sintético)
+    //  SISTEMA DE ÁUDIO (com fallback sintético)
     // ================================================================
     class SoundManager {
         constructor() {
             this.enabled = true;
             this.ctx = null;
-            this.sounds = {};
             this.buffers = {};
             this.musicSource = null;
             this.musicGain = null;
             this.musicPlaying = false;
             this.initialized = false;
-            this.useSynthetic = true;
             this.config = SOUND_CONFIG;
             this.volume = this.config.volume || 0.3;
-            this.musicVolume = this.config.musicVolume || 0.05;
-            this.loadingPromises = [];
+            this.musicVolume = this.config.musicVolume || 0.5;
+            this.synthSounds = {};
         }
 
         init() {
@@ -406,19 +440,15 @@
                 this.ctx = new (window.AudioContext || window.webkitAudioContext)();
                 const hasExternal = Object.values(this.config).some(v => v !== null && v !== '');
                 if (hasExternal) {
-                    this.useSynthetic = false;
                     this.loadExternalSounds().then(() => {
-                        console.log('✅ Áudios externos carregados.');
                         if (this.config.music) this.loadMusic();
-                    }).catch(err => console.warn('Erro ao carregar áudios externos:', err));
+                    }).catch(() => {});
                 } else {
-                    this.useSynthetic = true;
                     this.createSyntheticSounds();
-                    console.log('🔊 Usando sons sintéticos.');
                 }
                 this.initialized = true;
             } catch (e) {
-                console.warn('Web Audio API não suportada.', e);
+                console.warn('Web Audio não suportada.');
                 this.enabled = false;
             }
         }
@@ -429,17 +459,14 @@
                 if (!url) return null;
                 try {
                     const response = await fetch(url);
-                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    if (!response.ok) throw new Error();
                     const arrayBuffer = await response.arrayBuffer();
-                    const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
-                    return audioBuffer;
-                } catch (e) {
-                    console.warn(`Falha ao carregar ${url}:`, e);
+                    return await ctx.decodeAudioData(arrayBuffer);
+                } catch {
                     return null;
                 }
             };
-
-            const entries = Object.entries(this.config).filter(([key]) => key !== 'music' && key !== 'volume' && key !== 'musicVolume');
+            const entries = Object.entries(this.config).filter(([k]) => !['music','volume','musicVolume'].includes(k));
             for (const [key, url] of entries) {
                 if (url) {
                     const buffer = await load(url);
@@ -452,66 +479,65 @@
             if (!this.config.music) return;
             try {
                 const response = await fetch(this.config.music);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                if (!response.ok) throw new Error();
                 const arrayBuffer = await response.arrayBuffer();
                 const audioBuffer = await this.ctx.decodeAudioData(arrayBuffer);
                 this.buffers['music'] = audioBuffer;
-                console.log('🎵 Música carregada.');
                 if (this.enabled && this.ctx) this.playMusic();
             } catch (e) {
-                console.warn('Falha ao carregar música:', e);
+                console.warn('Música não carregada.');
             }
         }
 
         createSyntheticSounds() {
-            this.sounds.jump = this.createOscillatorSound(600, 800, 0.15, 'square');
-            this.sounds.shoot = this.createOscillatorSound(1200, 400, 0.1, 'sawtooth');
-            this.sounds.squish = this.createOscillatorSound(500, 200, 0.2, 'sine');
-            this.sounds.powerup = this.createArpeggioSound([523, 659, 784], 0.2);
-            this.sounds.coin = this.createOscillatorSound(1200, 900, 0.12, 'sine');
-            this.sounds.die = this.createOscillatorSound(400, 100, 0.5, 'sawtooth');
-            this.sounds.levelComplete = this.createArpeggioSound([523, 659, 784, 1047], 0.3);
-            this.sounds.gameOver = this.createOscillatorSound(200, 80, 0.8, 'sawtooth');
-            this.sounds.victory = this.createArpeggioSound([523, 659, 784, 1047, 1319], 0.4);
-            this.sounds.pipe = this.createOscillatorSound(300, 150, 0.3, 'sawtooth');
-            this.sounds.star = this.createArpeggioSound([1047, 1319, 1568], 0.4);
-            this.sounds.cape = this.createOscillatorSound(200, 500, 0.3, 'sine');
-            this.sounds.checkpoint = this.createArpeggioSound([659, 784, 1047], 0.3);
+            const ctx = this.ctx;
+            const vol = this.volume;
+            this.synthSounds = {
+                jump: (t) => this._osc(t, 600, 800, 0.15, 'square', vol),
+                shoot: (t) => this._osc(t, 1200, 400, 0.1, 'sawtooth', vol),
+                squish: (t) => this._osc(t, 500, 200, 0.2, 'sine', vol),
+                powerup: (t) => this._arpeggio(t, [523,659,784], 0.2, vol),
+                coin: (t) => this._osc(t, 1200, 900, 0.12, 'sine', vol),
+                die: (t) => this._osc(t, 400, 100, 0.5, 'sawtooth', vol),
+                levelComplete: (t) => this._arpeggio(t, [523,659,784,1047], 0.3, vol),
+                gameOver: (t) => this._osc(t, 200, 80, 0.8, 'sawtooth', vol),
+                victory: (t) => this._arpeggio(t, [523,659,784,1047,1319], 0.4, vol),
+                pipe: (t) => this._osc(t, 300, 150, 0.3, 'sawtooth', vol),
+                star: (t) => this._arpeggio(t, [1047,1319,1568], 0.4, vol),
+                cape: (t) => this._osc(t, 200, 500, 0.3, 'sine', vol),
+                checkpoint: (t) => this._arpeggio(t, [659,784,1047], 0.3, vol),
+            };
         }
 
-        createOscillatorSound(startFreq, endFreq, duration, type = 'sine') {
-            return (ctx) => {
+        _osc(ctx, startFreq, endFreq, duration, type, vol) {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(startFreq, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(endFreq, ctx.currentTime + duration);
+            gain.gain.setValueAtTime(vol, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + duration);
+        }
+
+        _arpeggio(ctx, notes, duration, vol) {
+            const now = ctx.currentTime;
+            const gain = ctx.createGain();
+            gain.gain.setValueAtTime(vol, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + duration + 0.1);
+            gain.connect(ctx.destination);
+            const step = duration / notes.length;
+            notes.forEach((freq, i) => {
                 const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = type;
-                osc.frequency.setValueAtTime(startFreq, ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(endFreq, ctx.currentTime + duration);
-                gain.gain.setValueAtTime(this.volume, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, now + i * step);
                 osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(ctx.currentTime);
-                osc.stop(ctx.currentTime + duration);
-            };
-        }
-
-        createArpeggioSound(notes, duration) {
-            return (ctx) => {
-                const now = ctx.currentTime;
-                const gain = ctx.createGain();
-                gain.gain.setValueAtTime(this.volume, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + duration + 0.1);
-                gain.connect(ctx.destination);
-                const step = duration / notes.length;
-                notes.forEach((freq, i) => {
-                    const osc = ctx.createOscillator();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, now + i * step);
-                    osc.connect(gain);
-                    osc.start(now + i * step);
-                    osc.stop(now + i * step + step * 0.9);
-                });
-            };
+                osc.start(now + i * step);
+                osc.stop(now + i * step + step * 0.9);
+            });
         }
 
         playSound(name) {
@@ -526,15 +552,11 @@
                     gain.connect(this.ctx.destination);
                     source.start();
                     return;
-                } catch (e) {
-                    console.warn('Erro ao tocar buffer:', e);
-                }
+                } catch {}
             }
-            const sound = this.sounds[name];
-            if (sound) {
-                try {
-                    if (typeof sound === 'function') sound(this.ctx);
-                } catch (e) {}
+            const synth = this.synthSounds[name];
+            if (synth) {
+                try { synth(this.ctx); } catch {}
             }
         }
 
@@ -555,15 +577,14 @@
                     source.start();
                     this.musicSource = source;
                     return;
-                } catch (e) {
-                    console.warn('Erro ao tocar música externa:', e);
-                }
+                } catch {}
             }
 
+            // Música sintética simples
             try {
                 const ctx = this.ctx;
                 const gain = ctx.createGain();
-                gain.gain.setValueAtTime(this.musicVolume, ctx.currentTime);
+                gain.gain.setValueAtTime(this.musicVolume * 0.3, ctx.currentTime);
                 gain.connect(ctx.destination);
                 this.musicGain = gain;
                 const notes = [262, 294, 330, 349, 392, 440, 494, 523];
@@ -580,29 +601,24 @@
                     setTimeout(() => { if (this.musicPlaying && this.enabled) playNote(); }, 250);
                 };
                 playNote();
-            } catch (e) {
-                console.warn('Erro ao iniciar música sintética:', e);
-            }
+            } catch {}
         }
 
         stopMusic() {
             this.musicPlaying = false;
             if (this.musicSource) {
-                try {
-                    this.musicSource.stop();
-                    this.musicSource = null;
-                } catch (e) {}
+                try { this.musicSource.stop(); this.musicSource = null; } catch {}
             }
             if (this.musicGain) {
                 try {
-                    this.musicGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.5);
+                    this.musicGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.3);
                     setTimeout(() => {
                         if (this.musicGain) {
                             this.musicGain.disconnect();
                             this.musicGain = null;
                         }
-                    }, 500);
-                } catch (e) {}
+                    }, 400);
+                } catch {}
             }
         }
 
@@ -611,33 +627,17 @@
             if (!this.enabled) {
                 this.stopMusic();
             } else {
-                if (this.ctx && this.ctx.state === 'suspended') {
-                    this.ctx.resume();
-                }
+                if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
                 this.playMusic();
             }
             return this.enabled;
         }
-
-        setVolume(vol) {
-            this.volume = Math.max(0, Math.min(1, vol));
-        }
-
-        setMusicVolume(vol) {
-            this.musicVolume = Math.max(0, Math.min(1, vol));
-            if (this.musicGain) {
-                this.musicGain.gain.setValueAtTime(this.musicVolume, this.ctx.currentTime);
-            }
-        }
     }
 
-    // ================================================================
-    //  INSTANCIA DO ÁUDIO
-    // ================================================================
     const sound = new SoundManager();
 
     // ================================================================
-    //  SISTEMA DE PARTÍCULAS (idêntico ao original)
+    //  SISTEMA DE PARTÍCULAS
     // ================================================================
     let particles = [];
     class Particle {
@@ -712,7 +712,7 @@
     }
 
     // ================================================================
-    //  CONFIGURAÇÕES GERAIS (DA FASE 1)
+    //  CONFIGURAÇÕES DO JOGO
     // ================================================================
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
@@ -733,9 +733,6 @@
     const starBadge = document.getElementById('starBadge');
     const coinCountSpan = document.getElementById('coinCount');
 
-    // ================================================================
-    //  DADOS DA FASE 1
-    // ================================================================
     const LEVEL_WIDTH = 3200;
     const FLAG_X = LEVEL_WIDTH - 80;
     const FLAG_Y = GROUND_Y - 80;
@@ -820,7 +817,7 @@
     const keys = {};
 
     // ================================================================
-    //  CLASSE PLAYER (com buffer de pulo e coyote - da fase2)
+    //  CLASSE PLAYER
     // ================================================================
     class Player {
         constructor() {
@@ -852,6 +849,7 @@
         update() {
             if (!this.alive || enteringPipe || paused) return;
 
+            // Buffer de pulo
             if (this.bufferTimer > 0) this.bufferTimer--;
             if (virtKeys.jump || keys[' '] || keys['ArrowUp'] || keys['w'] || keys['W']) {
                 if (!this.onGround) this.bufferTimer = this.jumpBufferMax;
@@ -1267,7 +1265,7 @@
     }
 
     // ================================================================
-    //  CLASSES ENEMY, POWERUP, PROJECTILE (idênticas ao original)
+    //  CLASSES ENEMY, POWERUP, PROJECTILE
     // ================================================================
     class Enemy {
         constructor(x, y, type) {
@@ -1579,7 +1577,7 @@
     }
 
     // ================================================================
-    //  FUNÇÕES DO JOGO
+    //  FUNÇÕES AUXILIARES
     // ================================================================
     function enterPipe(pipe) {
         if (enteringPipe) return;
@@ -1593,7 +1591,6 @@
     }
 
     function loadGame() {
-        console.log('🔄 Carregando Fase 1 - Campo Verde (com áudio personalizável)...');
         coins = coinsData.map(c => ({ ...c }));
         checkpoints = checkpointsData.map(c => ({ ...c, active: false }));
         powerUps = [];
@@ -1618,7 +1615,6 @@
         camera.x = Math.max(0, Math.min(player.x - W/2, LEVEL_WIDTH - W));
         updateUI();
         if (sound.enabled && sound.initialized) sound.playMusic();
-        console.log(`✅ Jogador: ${player ? 'OK' : 'FALHA'}, Inimigos: ${enemies.length}`);
     }
 
     function updateUI() {
@@ -1745,6 +1741,14 @@
                 e.preventDefault();
             }
         }, { passive: false });
+
+        // Inicializar áudio ao primeiro toque no canvas ou overlay
+        document.getElementById('startOverlay').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('startOverlay').style.display = 'none';
+            if (!sound.initialized) sound.init();
+            if (sound.enabled) sound.playMusic();
+        }, { passive: false });
     }
 
     function showTouchFeedback(clientX, clientY) {
@@ -1819,12 +1823,12 @@
     }
 
     // ================================================================
-    //  DESENHO DO CENÁRIO (original da fase1)
+    //  DESENHO DO CENÁRIO
     // ================================================================
     function drawBackground() {
         const grad = ctx.createLinearGradient(0, 0, 0, H);
-        grad.addColorStop(0, skyGrad[0] || '#4a90d9');
-        grad.addColorStop(1, skyGrad[1] || '#b5dffa');
+        grad.addColorStop(0, skyGrad[0]);
+        grad.addColorStop(1, skyGrad[1]);
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, W, H);
 
@@ -2108,6 +2112,22 @@
         ctx.shadowBlur = 0;
     }
 
+    // Função para desenhar retângulo arredondado (fallback)
+    function roundRect(ctx, x, y, w, h, r) {
+        if (typeof ctx.roundRect === 'function') {
+            ctx.roundRect(x, y, w, h, r);
+            return;
+        }
+        // Fallback manual
+        if (r > w/2) r = w/2;
+        if (r > h/2) r = h/2;
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+    }
+
     // ================================================================
     //  LOOP PRINCIPAL
     // ================================================================
@@ -2129,11 +2149,11 @@
             }
 
             if (!gameWon && !gameOver && lives > 0 && !levelComplete) {
-                if ((keys['z'] || keys['Z'] || keys['x'] || keys['X'] || virtKeys.shoot) && player.alive && !enteringPipe) {
+                if ((keys['z'] || keys['Z'] || keys['x'] || keys['X'] || virtKeys.shoot) && player && player.alive && !enteringPipe) {
                     player.shoot();
                 }
-                player.update();
-                if (player.alive) updateCamera(player.x);
+                if (player) player.update();
+                if (player && player.alive) updateCamera(player.x);
 
                 enemies = enemies.filter(e => e.update());
                 powerUps = powerUps.filter(pu => pu.update());
@@ -2143,7 +2163,7 @@
                 handleEnemyCollisions();
                 handleProjectileCollisions();
 
-                if (!player.alive && lives <= 0) {
+                if (player && !player.alive && lives <= 0) {
                     gameOver = true;
                     statusSpan.textContent = '💀 GAME OVER';
                     sound.playSound('gameOver');
@@ -2223,14 +2243,15 @@
             ctx.shadowBlur = 0;
         }
 
+        // Barra de progresso
         const progress = Math.min(1, (player ? player.x : 0) / (LEVEL_WIDTH - 100));
         ctx.fillStyle = 'rgba(0,0,0,0.3)';
         ctx.beginPath();
-        ctx.roundRect(W - 170, 12, 150, 10, 6);
+        roundRect(ctx, W - 170, 12, 150, 10, 6);
         ctx.fill();
         ctx.fillStyle = '#4caf50';
         ctx.beginPath();
-        ctx.roundRect(W - 170, 12, Math.max(4, progress * 150), 10, 6);
+        roundRect(ctx, W - 170, 12, Math.max(4, progress * 150), 10, 6);
         ctx.fill();
         ctx.fillStyle = 'rgba(255,255,255,0.7)';
         ctx.font = '8px Arial';
@@ -2244,34 +2265,13 @@
     // ================================================================
     //  INICIALIZAÇÃO
     // ================================================================
-    if (!CanvasRenderingContext2D.prototype.roundRect) {
-        CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
-            if (r > w/2) r = w/2;
-            if (r > h/2) r = h/2;
-            this.moveTo(x + r, y);
-            this.lineTo(x + w - r, y);
-            this.quadraticCurveTo(x + w, y, x + w, y + r);
-            this.lineTo(x + w, y + h - r);
-            this.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-            this.lineTo(x + r, y + h);
-            this.quadraticCurveTo(x, y + h, x, y + h - r);
-            this.lineTo(x, y + r);
-            this.quadraticCurveTo(x, y, x + r, y);
-            return this;
-        };
-    }
-
-    document.addEventListener('click', () => { if (!sound.initialized) sound.init(); }, { once: true });
-    document.addEventListener('touchstart', () => { if (!sound.initialized) sound.init(); }, { once: true });
-
     document.getElementById('soundBtn').textContent = '🔊';
 
     loadGame();
     setupVirtualControls();
     gameLoop();
 
-    console.log('🌿 Fase 1 - Campo Verde com suporte a áudio personalizado!');
-    console.log('ℹ️ Configure as URLs no objeto SOUND_CONFIG no início do script.');
+    console.log('🌿 Fase 1 - Campo Verde com suporte a áudio personalizado e otimizada para mobile!');
 </script>
 </body>
 </html>
