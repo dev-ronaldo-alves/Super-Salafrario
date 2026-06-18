@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>Fase 2 - Deserto Árido (com áudio personalizado)</title>
+    <title>Fase 2 - Deserto Árido (SNES Style)</title>
     <style>
-        /* ===== ESTILOS OTIMIZADOS PARA MOBILE (mesmos) ===== */
+        /* ===== ESTILOS OTIMIZADOS PARA MOBILE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -13,8 +13,7 @@
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
-        html,
-        body {
+        html, body {
             width: 100%;
             height: 100%;
             overflow: hidden;
@@ -29,7 +28,7 @@
             height: 100vh;
             max-width: 100%;
             max-height: 100%;
-            background: #16213e;
+            background: #0b0b1a;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -39,18 +38,59 @@
         }
         #gameCanvas {
             display: block;
-            background: #87CEEB;
+            background: #f4a460;
             image-rendering: pixelated;
-            width: 100%;
-            height: auto;
             max-width: 100%;
             max-height: 100%;
+            width: auto;
+            height: auto;
             aspect-ratio: 900 / 500;
             touch-action: none;
             border-radius: 8px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
             flex-shrink: 0;
+            border: 4px solid #2c3e50;
         }
+
+        /* Overlay de início */
+        .start-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            color: #fff;
+            font-size: 6vmin;
+            font-weight: bold;
+            text-align: center;
+            backdrop-filter: blur(6px);
+            cursor: pointer;
+            touch-action: manipulation;
+            flex-direction: column;
+            gap: 10px;
+            border-radius: 8px;
+        }
+        .start-overlay span {
+            background: rgba(255, 215, 0, 0.2);
+            padding: 16px 36px;
+            border-radius: 60px;
+            border: 3px solid #ffd700;
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.3);
+            text-shadow: 0 0 20px #ffd700;
+            font-size: 7vmin;
+        }
+        .start-overlay small {
+            font-size: 3vmin;
+            opacity: 0.8;
+            color: #ffdab9;
+        }
+
+        /* Controles */
         .controls-overlay {
             position: absolute;
             top: 0;
@@ -65,22 +105,22 @@
             position: absolute;
             bottom: 3%;
             left: 3%;
-            width: 42vmin;
-            height: 42vmin;
-            max-width: 220px;
-            max-height: 220px;
+            width: 44vmin;
+            height: 44vmin;
+            max-width: 240px;
+            max-height: 240px;
             pointer-events: auto;
             touch-action: none;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr);
             gap: 6px;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.6);
             border-radius: 20px;
             padding: 8px;
             backdrop-filter: blur(8px);
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
         }
         .dpad-btn {
             background: rgba(255, 255, 255, 0.2);
@@ -88,22 +128,23 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 6vmin;
-            color: rgba(255, 255, 255, 0.9);
+            font-size: 7vmin;
+            color: #fff;
             font-weight: bold;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
             transition: all 0.05s;
             touch-action: none;
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.5);
+            min-height: 44px;
+            min-width: 44px;
         }
-        .dpad-btn:active,
-        .dpad-btn.active {
-            background: rgba(255, 255, 255, 0.5);
-            transform: scale(0.90);
-            border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2);
+        .dpad-btn:active, .dpad-btn.active {
+            background: rgba(255, 255, 255, 0.45);
+            transform: scale(0.88);
+            border-color: #ffd700;
+            box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.3);
         }
         .dpad-empty {
             background: transparent;
@@ -127,10 +168,10 @@
             align-items: flex-end;
         }
         .btn-action {
-            width: 24vmin;
-            height: 24vmin;
-            max-width: 130px;
-            max-height: 130px;
+            width: 26vmin;
+            height: 26vmin;
+            max-width: 140px;
+            max-height: 140px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -138,44 +179,41 @@
             font-size: 7vmin;
             font-weight: bold;
             color: #fff;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.2);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+            border: 4px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.3);
             transition: all 0.05s;
             touch-action: none;
             cursor: pointer;
             -webkit-touch-callout: none;
+            min-width: 60px;
+            min-height: 60px;
         }
-        .btn-action:active,
-        .btn-action.active {
+        .btn-action:active, .btn-action.active {
             transform: translateY(4px);
-            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.3);
         }
         .btn-a {
             background: radial-gradient(circle at 30% 30%, #ff6b6b, #c0392b);
             border-color: #ff9a9a;
-            font-size: 6vmin;
         }
         .btn-b {
             background: radial-gradient(circle at 30% 30%, #6bcfff, #2980b9);
             border-color: #9ad4ff;
-            font-size: 6vmin;
-            width: 20vmin;
-            height: 20vmin;
-            max-width: 110px;
-            max-height: 110px;
+            width: 22vmin;
+            height: 22vmin;
+            max-width: 120px;
+            max-height: 120px;
         }
 
-        .btn-back,
-        .btn-restart,
-        .btn-sound,
-        .btn-pause {
+        /* Botões superiores */
+        .btn-back, .btn-restart, .btn-sound, .btn-pause {
             position: absolute;
             top: 2%;
             pointer-events: auto;
-            background: rgba(0, 0, 0, 0.55);
+            background: rgba(0, 0, 0, 0.6);
             color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             padding: 8px 14px;
             border-radius: 30px;
             font-size: 2.8vmin;
@@ -184,22 +222,22 @@
             touch-action: none;
             cursor: pointer;
             z-index: 20;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             gap: 6px;
             min-width: 48px;
             justify-content: center;
+            min-height: 40px;
+            transition: transform 0.1s, background 0.1s;
         }
         .btn-back { left: 2%; }
         .btn-sound { left: 18%; }
         .btn-pause { left: 34%; }
         .btn-restart { right: 2%; }
 
-        .btn-back:active,
-        .btn-restart:active,
-        .btn-sound:active,
-        .btn-pause:active {
+        .btn-back:active, .btn-restart:active, .btn-sound:active, .btn-pause:active,
+        .btn-back.active, .btn-restart.active, .btn-sound.active, .btn-pause.active {
             background: rgba(255, 255, 255, 0.25);
             transform: scale(0.92);
         }
@@ -215,30 +253,32 @@
             pointer-events: none;
             color: #fff;
             font-weight: bold;
-            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
             font-size: 2.6vmin;
             flex-wrap: wrap;
             gap: 2px 8px;
             z-index: 5;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.4);
             padding: 4px 12px;
             border-radius: 30px;
             backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            pointer-events: none;
         }
-        .ui-top .score { color: #ffd700; }
-        .ui-top .lives { color: #ff6b6b; }
-        .ui-top .power { color: #ff9f43; }
+        .ui-top .score { color: #ffd700; text-shadow: 0 0 10px #ffd700; }
+        .ui-top .lives { color: #ff6b6b; text-shadow: 0 0 10px #ff6b6b; }
+        .ui-top .power { color: #ff9f43; text-shadow: 0 0 10px #ff9f43; }
         .ui-top .status {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4);
             padding: 2px 12px;
             border-radius: 30px;
             font-size: 2.2vmin;
             white-space: nowrap;
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .ui-top .level {
-            color: #a8e6cf;
-            background: rgba(0, 0, 0, 0.2);
+            color: #ffdab9;
+            background: rgba(0, 0, 0, 0.3);
             padding: 2px 10px;
             border-radius: 30px;
             font-size: 2.2vmin;
@@ -257,51 +297,52 @@
             display: flex;
             align-items: center;
             gap: 3px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
         .badge-item .icon { font-size: 2.4vmin; }
 
         @media (max-width: 480px) {
             .dpad {
-                width: 38vmin;
-                height: 38vmin;
+                width: 40vmin;
+                height: 40vmin;
                 gap: 4px;
                 padding: 5px;
             }
-            .dpad-btn { font-size: 5vmin; }
+            .dpad-btn { font-size: 6vmin; min-height: 38px; min-width: 38px; }
             .btn-action {
-                width: 20vmin;
-                height: 20vmin;
+                width: 22vmin;
+                height: 22vmin;
                 font-size: 5vmin;
+                min-height: 50px;
+                min-width: 50px;
             }
             .btn-b {
-                width: 17vmin;
-                height: 17vmin;
+                width: 18vmin;
+                height: 18vmin;
                 font-size: 5vmin;
+                min-height: 44px;
+                min-width: 44px;
             }
             .ui-top { font-size: 2.2vmin; padding: 2px 8px; }
             .btn-back, .btn-restart, .btn-sound, .btn-pause {
                 font-size: 2.2vmin;
                 padding: 4px 10px;
-                min-width: 40px;
+                min-width: 36px;
+                min-height: 32px;
             }
         }
 
         .controls-overlay * {
             touch-action: none;
         }
-        .dpad-btn,
-        .btn-action,
-        .btn-restart,
-        .btn-sound,
-        .btn-back,
-        .btn-pause {
+        .dpad-btn, .btn-action, .btn-restart, .btn-sound, .btn-back, .btn-pause {
             -webkit-touch-callout: none;
         }
 
         .touch-feedback {
             position: absolute;
             border-radius: 50%;
-            background: rgba(255,255,255,0.3);
+            background: rgba(255,215,0,0.4);
             pointer-events: none;
             animation: touchFade 0.3s ease-out forwards;
             z-index: 100;
@@ -317,6 +358,11 @@
 <div class="game-wrapper" id="gameWrapper">
     <canvas id="gameCanvas" width="900" height="500"></canvas>
 
+    <div class="start-overlay" id="startOverlay">
+        <span>🏜️ TOQUE PARA JOGAR</span>
+        <small>🎵 Música nativa estilo SNES (Deserto)</small>
+    </div>
+
     <div class="ui-top" id="uiTop">
         <span class="score">🏆 <span id="scoreDisplay">0</span></span>
         <span class="lives">❤️ <span id="livesDisplay">3</span></span>
@@ -326,7 +372,7 @@
             <span class="badge-item" id="starBadge"><span class="icon">✨</span> ❌</span>
             <span class="badge-item" id="coinBadge"><span class="icon">🪙</span> <span id="coinCount">0</span></span>
         </div>
-        <span class="level" id="levelDisplay">Fase 2 - Deserto</span>
+        <span class="level" id="levelDisplay">🏜️ Fase 2 - Deserto Árido</span>
         <span class="status" id="statusDisplay">▶ Jogando</span>
     </div>
 
@@ -355,14 +401,11 @@
 
 <script>
     // ================================================================
-    //  CONFIGURAÇÃO DE ÁUDIO PERSONALIZADA
-    //  ================================================================
-    //  Preencha as URLs abaixo com os caminhos para seus próprios arquivos de áudio.
-    //  Deixe como null para usar os sons sintéticos padrão.
-    //  Formato suportado: MP3, WAV, OGG (qualquer formato que o navegador suporte via Web Audio).
-    //  A música será reproduzida em loop.
+    //  CONFIGURAÇÃO DE ÁUDIO (100% nativo, estilo SNES)
+    // ================================================================
     const SOUND_CONFIG = {
-        jump: null,        // ex: 'sounds/jump.mp3'
+        // Sons SFX (opcionais - pode deixar null para sintéticos)
+        jump: null,
         shoot: null,
         squish: null,
         powerup: null,
@@ -375,153 +418,254 @@
         star: null,
         cape: null,
         checkpoint: null,
-        music: './assets/sound/music1.mp3',       // música de fundo (será reproduzida em loop)
-        // Volume global (0 a 1)
-        volume: 0.3,
-        musicVolume: 1.0
+        // Música nativa será gerada internamente
+        music: null,
+        volume: 0.25,
+        musicVolume: 0.35
     };
 
     // ================================================================
-    //  SISTEMA DE ÁUDIO (com suporte a arquivos externos + sintético)
+    //  SISTEMA DE ÁUDIO COM MÚSICA NATIVA STYLE SNES (FASE 2)
     // ================================================================
     class SoundManager {
         constructor() {
             this.enabled = true;
             this.ctx = null;
-            this.sounds = {};
             this.buffers = {};
             this.musicSource = null;
             this.musicGain = null;
             this.musicPlaying = false;
             this.initialized = false;
-            this.useSynthetic = true;  // será false se algum som externo for carregado
             this.config = SOUND_CONFIG;
-            this.volume = this.config.volume || 0.3;
-            this.musicVolume = this.config.musicVolume || 0.05;
-            this.loadingPromises = [];
+            this.volume = this.config.volume || 0.25;
+            this.musicVolume = this.config.musicVolume || 0.35;
+            this.synthSounds = {};
+            this.musicNotes = [];
+            this.musicDuration = 0;
         }
 
         init() {
             if (this.initialized) return;
             try {
                 this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-                // Verifica se há algum som externo configurado
-                const hasExternal = Object.values(this.config).some(v => v !== null && v !== '');
-                if (hasExternal) {
-                    this.useSynthetic = false;
-                    this.loadExternalSounds().then(() => {
-                        console.log('✅ Áudios externos carregados.');
-                        if (this.config.music) this.loadMusic();
-                    }).catch(err => console.warn('Erro ao carregar áudios externos:', err));
-                } else {
-                    this.useSynthetic = true;
-                    this.createSyntheticSounds();
-                    console.log('🔊 Usando sons sintéticos.');
-                }
+                this.createSyntheticSounds();
+                this.createNativeMusic(); // Música diferente para a fase 2
                 this.initialized = true;
+                console.log('🎵 Áudio nativo inicializado (estilo SNES - Deserto)');
             } catch (e) {
-                console.warn('Web Audio API não suportada.', e);
+                console.warn('Web Audio não suportada.');
                 this.enabled = false;
             }
         }
 
-        // Carrega arquivos de áudio externos
-        async loadExternalSounds() {
-            const ctx = this.ctx;
-            const load = async (url) => {
-                if (!url) return null;
-                try {
-                    const response = await fetch(url);
-                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                    const arrayBuffer = await response.arrayBuffer();
-                    const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
-                    return audioBuffer;
-                } catch (e) {
-                    console.warn(`Falha ao carregar ${url}:`, e);
-                    return null;
-                }
-            };
-
-            const entries = Object.entries(this.config).filter(([key]) => key !== 'music' && key !== 'volume' && key !== 'musicVolume');
-            for (const [key, url] of entries) {
-                if (url) {
-                    const buffer = await load(url);
-                    if (buffer) this.buffers[key] = buffer;
-                }
-            }
-        }
-
-        async loadMusic() {
-            if (!this.config.music) return;
-            try {
-                const response = await fetch(this.config.music);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const arrayBuffer = await response.arrayBuffer();
-                const audioBuffer = await this.ctx.decodeAudioData(arrayBuffer);
-                this.buffers['music'] = audioBuffer;
-                console.log('🎵 Música carregada.');
-                if (this.enabled && this.ctx) this.playMusic();
-            } catch (e) {
-                console.warn('Falha ao carregar música:', e);
-            }
-        }
-
-        // Sons sintéticos (fallback)
+        // ===== Sons SFX sintéticos (simples) =====
         createSyntheticSounds() {
-            this.sounds.jump = this.createOscillatorSound(600, 800, 0.15, 'square');
-            this.sounds.shoot = this.createOscillatorSound(1200, 400, 0.1, 'sawtooth');
-            this.sounds.squish = this.createOscillatorSound(500, 200, 0.2, 'sine');
-            this.sounds.powerup = this.createArpeggioSound([523, 659, 784], 0.2);
-            this.sounds.coin = this.createOscillatorSound(1200, 900, 0.12, 'sine');
-            this.sounds.die = this.createOscillatorSound(400, 100, 0.5, 'sawtooth');
-            this.sounds.levelComplete = this.createArpeggioSound([523, 659, 784, 1047], 0.3);
-            this.sounds.gameOver = this.createOscillatorSound(200, 80, 0.8, 'sawtooth');
-            this.sounds.victory = this.createArpeggioSound([523, 659, 784, 1047, 1319], 0.4);
-            this.sounds.pipe = this.createOscillatorSound(300, 150, 0.3, 'sawtooth');
-            this.sounds.star = this.createArpeggioSound([1047, 1319, 1568], 0.4);
-            this.sounds.cape = this.createOscillatorSound(200, 500, 0.3, 'sine');
-            this.sounds.checkpoint = this.createArpeggioSound([659, 784, 1047], 0.3);
+            const ctx = this.ctx;
+            const vol = this.volume;
+            this.synthSounds = {
+                jump: (t) => this._osc(t, 600, 800, 0.12, 'square', vol * 1.2),
+                shoot: (t) => this._osc(t, 1200, 400, 0.08, 'sawtooth', vol),
+                squish: (t) => this._osc(t, 500, 200, 0.15, 'sine', vol),
+                powerup: (t) => this._arpeggio(t, [523,659,784], 0.2, vol * 1.5),
+                coin: (t) => this._osc(t, 1200, 900, 0.08, 'sine', vol * 1.3),
+                die: (t) => this._osc(t, 400, 100, 0.4, 'sawtooth', vol),
+                levelComplete: (t) => this._arpeggio(t, [523,659,784,1047], 0.3, vol * 1.5),
+                gameOver: (t) => this._osc(t, 200, 80, 0.6, 'sawtooth', vol),
+                victory: (t) => this._arpeggio(t, [523,659,784,1047,1319], 0.4, vol * 1.5),
+                pipe: (t) => this._osc(t, 300, 150, 0.25, 'sawtooth', vol),
+                star: (t) => this._arpeggio(t, [1047,1319,1568], 0.3, vol * 1.2),
+                cape: (t) => this._osc(t, 200, 500, 0.2, 'sine', vol * 0.8),
+                checkpoint: (t) => this._arpeggio(t, [659,784,1047], 0.25, vol * 1.2),
+            };
         }
 
-        createOscillatorSound(startFreq, endFreq, duration, type = 'sine') {
-            return (ctx) => {
+        _osc(ctx, startFreq, endFreq, duration, type, vol) {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(startFreq, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(endFreq, ctx.currentTime + duration);
+            gain.gain.setValueAtTime(vol, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + duration);
+        }
+
+        _arpeggio(ctx, notes, duration, vol) {
+            const now = ctx.currentTime;
+            const gain = ctx.createGain();
+            gain.gain.setValueAtTime(vol, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + duration + 0.1);
+            gain.connect(ctx.destination);
+            const step = duration / notes.length;
+            notes.forEach((freq, i) => {
                 const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = type;
-                osc.frequency.setValueAtTime(startFreq, ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(endFreq, ctx.currentTime + duration);
-                gain.gain.setValueAtTime(this.volume, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, now + i * step);
                 osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(ctx.currentTime);
-                osc.stop(ctx.currentTime + duration);
-            };
+                osc.start(now + i * step);
+                osc.stop(now + i * step + step * 0.9);
+            });
         }
 
-        createArpeggioSound(notes, duration) {
-            return (ctx) => {
-                const now = ctx.currentTime;
-                const gain = ctx.createGain();
-                gain.gain.setValueAtTime(this.volume, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + duration + 0.1);
-                gain.connect(ctx.destination);
-                const step = duration / notes.length;
-                notes.forEach((freq, i) => {
-                    const osc = ctx.createOscillator();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, now + i * step);
-                    osc.connect(gain);
-                    osc.start(now + i * step);
-                    osc.stop(now + i * step + step * 0.9);
-                });
-            };
+        // ===== MÚSICA NATIVA PARA A FASE 2 (Deserto) =====
+        createNativeMusic() {
+            // Melodia estilo "Desert" - mais lenta, com notas árabes/flauta
+            // Escala menor ou frígia para dar um ar de deserto
+            const melody = [
+                // Frase 1
+                {freq: 440, dur: 0.2}, // A4
+                {freq: 0, dur: 0.05},
+                {freq: 523, dur: 0.2}, // C5
+                {freq: 0, dur: 0.05},
+                {freq: 587, dur: 0.3}, // D5
+                {freq: 0, dur: 0.05},
+                {freq: 523, dur: 0.2},
+                {freq: 0, dur: 0.05},
+                // Frase 2
+                {freq: 440, dur: 0.2},
+                {freq: 0, dur: 0.05},
+                {freq: 587, dur: 0.3},
+                {freq: 0, dur: 0.05},
+                {freq: 659, dur: 0.3}, // E5
+                {freq: 0, dur: 0.05},
+                {freq: 587, dur: 0.2},
+                {freq: 0, dur: 0.05},
+                // Frase 3
+                {freq: 523, dur: 0.2},
+                {freq: 0, dur: 0.05},
+                {freq: 440, dur: 0.2},
+                {freq: 0, dur: 0.05},
+                {freq: 523, dur: 0.3},
+                {freq: 0, dur: 0.05},
+                {freq: 440, dur: 0.2},
+                {freq: 0, dur: 0.05},
+                // Frase 4
+                {freq: 659, dur: 0.3},
+                {freq: 0, dur: 0.05},
+                {freq: 587, dur: 0.3},
+                {freq: 0, dur: 0.05},
+                {freq: 523, dur: 0.4},
+                {freq: 0, dur: 0.10},
+                {freq: 440, dur: 0.4},
+                {freq: 0, dur: 0.10},
+            ];
+
+            // Baixo mais profundo e lento
+            const bass = [
+                {freq: 110, dur: 0.5}, // A2
+                {freq: 0, dur: 0.05},
+                {freq: 110, dur: 0.5},
+                {freq: 0, dur: 0.05},
+                {freq: 110, dur: 0.5},
+                {freq: 0, dur: 0.05},
+                {freq: 110, dur: 0.5},
+                {freq: 0, dur: 0.05},
+                {freq: 110, dur: 0.5},
+                {freq: 0, dur: 0.05},
+                {freq: 110, dur: 0.5},
+                {freq: 0, dur: 0.05},
+                {freq: 110, dur: 0.5},
+                {freq: 0, dur: 0.05},
+                {freq: 110, dur: 0.5},
+                {freq: 0, dur: 0.05},
+            ];
+
+            this.musicNotes = [];
+            let currentTime = 0;
+            // Adiciona melodia
+            for (let note of melody) {
+                if (note.freq > 0) {
+                    this.musicNotes.push({ time: currentTime, freq: note.freq, dur: note.dur, type: 'melody' });
+                }
+                currentTime += note.dur + 0.02;
+            }
+            // Adiciona baixo (em tempos específicos)
+            let bassTime = 0;
+            for (let i = 0; i < 16; i++) {
+                const note = bass[i % bass.length];
+                if (note.freq > 0) {
+                    this.musicNotes.push({ time: bassTime, freq: note.freq, dur: note.dur, type: 'bass' });
+                }
+                bassTime += note.dur + 0.02;
+            }
+            this.musicNotes.sort((a, b) => a.time - b.time);
+            this.musicDuration = currentTime > bassTime ? currentTime : bassTime;
         }
 
-        // Reproduz um som pelo nome (usa buffer externo se disponível, senão sintético)
+        // Toca a música nativa
+        playMusic() {
+            if (!this.enabled || !this.initialized || this.musicPlaying || !this.ctx) return;
+            this.musicPlaying = true;
+
+            this.musicGain = this.ctx.createGain();
+            this.musicGain.gain.setValueAtTime(this.musicVolume, this.ctx.currentTime);
+            this.musicGain.connect(this.ctx.destination);
+
+            this.scheduleMusic();
+        }
+
+        scheduleMusic() {
+            if (!this.musicPlaying || !this.enabled) return;
+
+            const startTime = this.ctx.currentTime;
+            const gain = this.musicGain;
+
+            for (let i = 0; i < this.musicNotes.length; i++) {
+                const note = this.musicNotes[i];
+                const time = startTime + note.time;
+                const freq = note.freq;
+                const dur = note.dur;
+                const type = note.type;
+
+                let oscType = (type === 'bass') ? 'sawtooth' : 'square';
+                let volFactor = (type === 'bass') ? 0.5 : 0.8;
+
+                setTimeout(() => {
+                    if (!this.musicPlaying || !this.enabled || !this.ctx) return;
+                    try {
+                        const osc = this.ctx.createOscillator();
+                        const gainNode = this.ctx.createGain();
+                        osc.type = oscType;
+                        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                        gainNode.gain.setValueAtTime(this.musicVolume * volFactor, this.ctx.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + dur);
+                        osc.connect(gainNode);
+                        gainNode.connect(gain);
+                        osc.start(this.ctx.currentTime);
+                        osc.stop(this.ctx.currentTime + dur);
+                    } catch (e) {}
+                }, (time - this.ctx.currentTime) * 1000);
+            }
+
+            const totalDuration = this.musicDuration + 0.3;
+            setTimeout(() => {
+                if (this.musicPlaying && this.enabled) {
+                    this.scheduleMusic();
+                }
+            }, totalDuration * 1000);
+        }
+
+        stopMusic() {
+            this.musicPlaying = false;
+            if (this.musicGain) {
+                try {
+                    this.musicGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.3);
+                    setTimeout(() => {
+                        if (this.musicGain) {
+                            this.musicGain.disconnect();
+                            this.musicGain = null;
+                        }
+                    }, 400);
+                } catch (e) {}
+            }
+        }
+
+        // ===== Interface pública =====
         playSound(name) {
             if (!this.enabled || !this.initialized || !this.ctx) return;
-            // Tenta usar buffer externo
             if (this.buffers[name]) {
                 try {
                     const source = this.ctx.createBufferSource();
@@ -532,87 +676,11 @@
                     gain.connect(this.ctx.destination);
                     source.start();
                     return;
-                } catch (e) {
-                    console.warn('Erro ao tocar buffer:', e);
-                }
-            }
-            // Fallback para sintético
-            const sound = this.sounds[name];
-            if (sound) {
-                try {
-                    if (typeof sound === 'function') sound(this.ctx);
                 } catch (e) {}
             }
-        }
-
-        // Música de fundo (usa buffer externo se disponível, senão sintética)
-        playMusic() {
-            if (!this.enabled || !this.initialized || this.musicPlaying || !this.ctx) return;
-            this.musicPlaying = true;
-
-            // Se temos buffer de música externo, usa ele em loop
-            if (this.buffers['music']) {
-                try {
-                    const source = this.ctx.createBufferSource();
-                    source.buffer = this.buffers['music'];
-                    source.loop = true;
-                    const gain = this.ctx.createGain();
-                    gain.gain.setValueAtTime(this.musicVolume, this.ctx.currentTime);
-                    this.musicGain = gain;
-                    source.connect(gain);
-                    gain.connect(this.ctx.destination);
-                    source.start();
-                    this.musicSource = source;
-                    return;
-                } catch (e) {
-                    console.warn('Erro ao tocar música externa:', e);
-                }
-            }
-
-            // Música sintética (fallback)
-            try {
-                const ctx = this.ctx;
-                const gain = ctx.createGain();
-                gain.gain.setValueAtTime(this.musicVolume, ctx.currentTime);
-                gain.connect(ctx.destination);
-                this.musicGain = gain;
-                const notes = [262, 294, 330, 349, 392, 440, 494, 523];
-                let index = 0;
-                const playNote = () => {
-                    if (!this.musicPlaying || !this.enabled) return;
-                    const osc = ctx.createOscillator();
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(notes[index % notes.length], ctx.currentTime);
-                    osc.connect(gain);
-                    osc.start(ctx.currentTime);
-                    osc.stop(ctx.currentTime + 0.12);
-                    index++;
-                    setTimeout(() => { if (this.musicPlaying && this.enabled) playNote(); }, 250);
-                };
-                playNote();
-            } catch (e) {
-                console.warn('Erro ao iniciar música sintética:', e);
-            }
-        }
-
-        stopMusic() {
-            this.musicPlaying = false;
-            if (this.musicSource) {
-                try {
-                    this.musicSource.stop();
-                    this.musicSource = null;
-                } catch (e) {}
-            }
-            if (this.musicGain) {
-                try {
-                    this.musicGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.5);
-                    setTimeout(() => {
-                        if (this.musicGain) {
-                            this.musicGain.disconnect();
-                            this.musicGain = null;
-                        }
-                    }, 500);
-                } catch (e) {}
+            const synth = this.synthSounds[name];
+            if (synth) {
+                try { synth(this.ctx); } catch (e) {}
             }
         }
 
@@ -620,44 +688,18 @@
             this.enabled = !this.enabled;
             if (!this.enabled) {
                 this.stopMusic();
-                // Fecha o contexto para liberar recursos? Melhor não.
             } else {
-                if (this.ctx && this.ctx.state === 'suspended') {
-                    this.ctx.resume();
-                }
+                if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
                 this.playMusic();
             }
             return this.enabled;
         }
-
-        // Ajusta volume global
-        setVolume(vol) {
-            this.volume = Math.max(0, Math.min(1, vol));
-        }
-
-        setMusicVolume(vol) {
-            this.musicVolume = Math.max(0, Math.min(1, vol));
-            if (this.musicGain) {
-                this.musicGain.gain.setValueAtTime(this.musicVolume, this.ctx.currentTime);
-            }
-        }
     }
 
-    // ================================================================
-    //  INSTANCIA DO ÁUDIO
-    // ================================================================
     const sound = new SoundManager();
 
     // ================================================================
-    //  O RESTANTE DO JOGO PERMANECE IGUAL (apenas referências ao sound)
-    // ================================================================
-    //  (Código do jogo é o mesmo da versão anterior, apenas com a nova classe SoundManager)
-    //  Para economizar espaço, mantive a estrutura do jogo, mas você pode ver
-    //  que todas as chamadas sound.playSound() e sound.playMusic() continuam funcionando.
-    // ================================================================
-
-    // ================================================================
-    //  SISTEMA DE PARTÍCULAS (idêntico)
+    //  SISTEMA DE PARTÍCULAS
     // ================================================================
     let particles = [];
     class Particle {
@@ -684,14 +726,14 @@
             if (this.type === 'circle') {
                 ctx.fillStyle = this.color;
                 ctx.shadowColor = this.color;
-                ctx.shadowBlur = 10;
+                ctx.shadowBlur = 15;
                 ctx.beginPath();
                 ctx.arc(0, 0, r, 0, Math.PI * 2);
                 ctx.fill();
             } else if (this.type === 'star') {
                 ctx.fillStyle = this.color;
                 ctx.shadowColor = this.color;
-                ctx.shadowBlur = 15;
+                ctx.shadowBlur = 20;
                 const spikes = 5, outer = r, inner = r * 0.4;
                 ctx.beginPath();
                 for (let i = 0; i < spikes * 2; i++) {
@@ -705,7 +747,7 @@
             } else if (this.type === 'spark') {
                 ctx.strokeStyle = this.color;
                 ctx.shadowColor = this.color;
-                ctx.shadowBlur = 8;
+                ctx.shadowBlur = 12;
                 ctx.lineWidth = 2;
                 ctx.beginPath();
                 ctx.moveTo(-r, 0);
@@ -723,7 +765,7 @@
             const vx = Math.cos(angle) * speed + (config.vx || 0);
             const vy = Math.sin(angle) * speed + (config.vy || -1);
             const radius = (config.radius || 3) * (0.5 + Math.random() * 0.5);
-            const color = config.color || '#ffaa00';
+            const color = config.color || '#ffd700';
             const life = (config.life || 30) * (0.7 + Math.random() * 0.3);
             const type = config.type || 'circle';
             const gravity = config.gravity || 0.05;
@@ -732,7 +774,7 @@
     }
 
     // ================================================================
-    //  CONFIGURAÇÕES GERAIS
+    //  CONFIGURAÇÕES DA FASE 2 (Deserto) - Cores SNES
     // ================================================================
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
@@ -753,9 +795,41 @@
     const starBadge = document.getElementById('starBadge');
     const coinCountSpan = document.getElementById('coinCount');
 
-    // ================================================================
-    //  DADOS DA FASE 2 (mesmos)
-    // ================================================================
+    // Cores estilo SNES para o deserto
+    const COLORS = {
+        skyTop: '#f4a460',
+        skyBottom: '#ffdab9',
+        groundTop: '#d2b48c',
+        groundBody1: '#c19a6b',
+        groundBody2: '#8b7355',
+        platform: '#a67c52',
+        platformDark: '#7a5d3f',
+        blockQuestion: '#ffd700',
+        blockQuestionDark: '#f9a825',
+        blockUsed: '#78909c',
+        pipeBody: '#388e3c',
+        pipeDark: '#1b5e20',
+        pipeLight: '#4caf50',
+        coin: '#ffd700',
+        coinShine: '#ffaa00',
+        checkpointActive: '#2ecc71',
+        checkpointInactive: '#95a5a6',
+        flagPole: '#5d4037',
+        flag: '#f1c40f',
+        playerBody: '#e74c3c',
+        playerOveralls: '#1a5276',
+        playerSkin: '#fdbcb4',
+        playerHat: '#c0392b',
+        enemyBody: '#8d6e63',
+        enemyDark: '#5d4037',
+        enemyEye: '#fff',
+        enemyPupil: '#1a1a2e',
+        powerupFire: '#ff6b00',
+        powerupCape: '#e74c3c',
+        powerupStar: '#f1c40f',
+    };
+
+    // Dados da fase 2 (mesmos, mas com cores ajustadas)
     const LEVEL_WIDTH = 3400;
     const FLAG_X = LEVEL_WIDTH - 80;
     const FLAG_Y = GROUND_Y - 80;
@@ -824,9 +898,6 @@
         { x: 800, y: GROUND_Y - 60, w: 40, h: 60, type: 'entry', targetLevel: 10, exitX: 200, exitY: GROUND_Y - 40 },
         { x: 1950, y: GROUND_Y - 60, w: 40, h: 60, type: 'entry', targetLevel: 11, exitX: 250, exitY: GROUND_Y - 40 },
     ];
-    const skyGrad = ['#f4a460', '#ffdab9'];
-    const groundTop = '#d2b48c';
-    const groundBody = ['#c19a6b', '#8b7355'];
 
     // ================================================================
     //  ESTADO DO JOGO
@@ -849,7 +920,7 @@
     const keys = {};
 
     // ================================================================
-    //  CLASSE PLAYER (com buffer de pulo e coyote)
+    //  CLASSE PLAYER (mesma da fase 1, com cores)
     // ================================================================
     class Player {
         constructor() {
@@ -1026,7 +1097,7 @@
                     powerUps.push(pu);
                     sound.playSound('powerup');
                     emitParticles(block.x + block.w/2, block.y, 15, {
-                        color: '#ffdd44', radius: 4, speed: 3, life: 25, gravity: 0.05, vy: -2, type: 'star'
+                        color: '#ffd700', radius: 4, speed: 3, life: 25, gravity: 0.05, vy: -2, type: 'star'
                     });
                 }
             }
@@ -1203,7 +1274,7 @@
 
             if (this.invincible) {
                 const glow = ctx.createRadialGradient(sx + this.w/2, sy + this.h/2, 2, sx + this.w/2, sy + this.h/2, 40);
-                glow.addColorStop(0, 'rgba(255,215,0,0.25)');
+                glow.addColorStop(0, 'rgba(255,215,0,0.4)');
                 glow.addColorStop(1, 'rgba(255,215,0,0)');
                 ctx.fillStyle = glow;
                 ctx.beginPath();
@@ -1222,10 +1293,10 @@
                 ctx.shadowBlur = 0;
             }
 
-            const bodyColor = (this.invincible) ? '#f1c40f' : '#e74c3c';
-            const overallColor = (this.invincible) ? '#ffffff' : '#2c3e7a';
-            const skinColor = (this.invincible) ? '#f5f5f5' : '#fdbcb4';
-            const hatColor = (this.invincible) ? '#2c3e50' : '#c0392b';
+            const bodyColor = (this.invincible) ? '#f1c40f' : COLORS.playerBody;
+            const overallColor = (this.invincible) ? '#ffffff' : COLORS.playerOveralls;
+            const skinColor = (this.invincible) ? '#f5f5f5' : COLORS.playerSkin;
+            const hatColor = (this.invincible) ? '#2c3e50' : COLORS.playerHat;
 
             ctx.shadowColor = 'rgba(0,0,0,0.15)';
             ctx.shadowBlur = 8;
@@ -1296,7 +1367,7 @@
     }
 
     // ================================================================
-    //  CLASSES ENEMY, POWERUP, PROJECTILE (idênticas)
+    //  CLASSES ENEMY, POWERUP, PROJECTILE (com cores)
     // ================================================================
     class Enemy {
         constructor(x, y, type) {
@@ -1665,7 +1736,7 @@
     }
 
     function loadGame() {
-        console.log('🔄 Carregando fase Deserto Árido (mobile com áudio personalizável)...');
+        console.log('🏜️ Carregando Fase 2 - Deserto Árido (SNES Style)');
         coins = coinsData.map(c => ({ ...c }));
         checkpoints = checkpointsData.map(c => ({ ...c, active: false }));
         powerUps = [];
@@ -1690,7 +1761,6 @@
         camera.x = Math.max(0, Math.min(player.x - W/2, LEVEL_WIDTH - W));
         updateUI();
         if (sound.enabled && sound.initialized) sound.playMusic();
-        console.log(`✅ Jogador: ${player ? 'OK' : 'FALHA'}, Inimigos: ${enemies.length}`);
     }
 
     function updateUI() {
@@ -1799,15 +1869,48 @@
             });
         });
 
-        document.getElementById('restartBtn').addEventListener('click', loadGame);
-        document.getElementById('backBtn').addEventListener('click', () => {
+        function setupTopButton(id, action) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            let touchHandled = false;
+            const handler = (e) => {
+                e.preventDefault();
+                action(e);
+                el.classList.add('active');
+                setTimeout(() => el.classList.remove('active'), 150);
+            };
+            el.addEventListener('touchstart', (e) => {
+                touchHandled = true;
+                handler(e);
+            }, { passive: false });
+            el.addEventListener('click', (e) => {
+                if (touchHandled) {
+                    touchHandled = false;
+                    return;
+                }
+                handler(e);
+            });
+            el.addEventListener('touchcancel', () => {
+                el.classList.remove('active');
+            });
+        }
+
+        setupTopButton('restartBtn', () => {
+            loadGame();
+            if (navigator.vibrate) navigator.vibrate(20);
+        });
+        setupTopButton('backBtn', () => {
             window.location.href = 'index.html';
         });
-        document.getElementById('pauseBtn').addEventListener('click', togglePause);
-        document.getElementById('soundBtn').addEventListener('click', () => {
+        setupTopButton('pauseBtn', () => {
+            togglePause();
+            if (navigator.vibrate) navigator.vibrate(10);
+        });
+        setupTopButton('soundBtn', () => {
             if (!sound.initialized) sound.init();
             const enabled = sound.toggleSound();
             document.getElementById('soundBtn').textContent = enabled ? '🔊' : '🔇';
+            if (navigator.vibrate) navigator.vibrate(10);
         });
 
         document.getElementById('controlsOverlay').addEventListener('touchstart', (e) => {
@@ -1816,6 +1919,19 @@
                 e.target.closest('.btn-back') || e.target.closest('.btn-pause')) {
                 e.preventDefault();
             }
+        }, { passive: false });
+
+        document.getElementById('startOverlay').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('startOverlay').style.display = 'none';
+            if (!sound.initialized) sound.init();
+            if (sound.enabled) sound.playMusic();
+        }, { passive: false });
+        document.getElementById('startOverlay').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            document.getElementById('startOverlay').style.display = 'none';
+            if (!sound.initialized) sound.init();
+            if (sound.enabled) sound.playMusic();
         }, { passive: false });
     }
 
@@ -1891,15 +2007,16 @@
     }
 
     // ================================================================
-    //  DESENHO DO CENÁRIO (mesmo)
+    //  DESENHO DO CENÁRIO (Deserto - cores SNES)
     // ================================================================
     function drawBackground() {
         const grad = ctx.createLinearGradient(0, 0, 0, H);
-        grad.addColorStop(0, skyGrad[0] || '#f4a460');
-        grad.addColorStop(1, skyGrad[1] || '#ffdab9');
+        grad.addColorStop(0, COLORS.skyTop);
+        grad.addColorStop(1, COLORS.skyBottom);
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, W, H);
 
+        // Nuvens (tons de laranja claro)
         const clouds = [
             {x:100,y:50,s:1.2},{x:400,y:30,s:1.8},{x:750,y:60,s:1.0},{x:1100,y:40,s:1.5},
             {x:1500,y:55,s:1.3},{x:1900,y:35,s:1.7},{x:2300,y:50,s:1.1},{x:2700,y:30,s:1.6},
@@ -1909,9 +2026,9 @@
         for (const c of clouds) {
             const sx = ((c.x - scroll) % (W + 200) + W + 200) % (W + 200) - 100;
             const sy = c.y, s = c.s;
-            ctx.fillStyle = 'rgba(255,255,255,0.7)';
+            ctx.fillStyle = 'rgba(255, 200, 150, 0.7)';
             ctx.shadowBlur = 30;
-            ctx.shadowColor = 'rgba(255,255,255,0.2)';
+            ctx.shadowColor = 'rgba(255, 200, 150, 0.2)';
             ctx.beginPath();
             ctx.arc(sx, sy, 30 * s, 0, Math.PI * 2);
             ctx.arc(sx + 35 * s, sy - 15 * s, 35 * s, 0, Math.PI * 2);
@@ -1922,6 +2039,7 @@
         }
         ctx.shadowBlur = 0;
 
+        // Montanhas de areia
         const mountains = [
             {x:200,w:250,h:90,c:'#c19a6b'},{x:600,w:300,h:130,c:'#b8956a'},
             {x:1000,w:200,h:70,c:'#c19a6b'},{x:1400,w:280,h:110,c:'#b8956a'},
@@ -1942,7 +2060,7 @@
             ctx.quadraticCurveTo(sx + m.w*0.75, GROUND_Y - m.h, sx + m.w, GROUND_Y);
             ctx.fill();
             ctx.shadowBlur = 0;
-            ctx.fillStyle = 'rgba(255,255,255,0.15)';
+            ctx.fillStyle = 'rgba(255, 200, 150, 0.2)';
             ctx.beginPath();
             ctx.moveTo(sx + m.w*0.2, GROUND_Y - m.h*0.5);
             ctx.quadraticCurveTo(sx + m.w*0.4, GROUND_Y - m.h*0.9, sx + m.w*0.5, GROUND_Y - m.h*1.0);
@@ -1956,14 +2074,14 @@
         for (const seg of groundSegments) {
             const sx = seg.x - camera.x;
             if (sx + seg.w < -20 || sx > W + 20) continue;
-            ctx.fillStyle = groundTop;
+            ctx.fillStyle = COLORS.groundTop;
             ctx.shadowBlur = 10;
             ctx.shadowColor = 'rgba(0,0,0,0.1)';
             ctx.fillRect(sx, seg.y, seg.w, 10);
             ctx.shadowBlur = 0;
             const grad = ctx.createLinearGradient(0, seg.y + 10, 0, seg.y + seg.h);
-            grad.addColorStop(0, groundBody[0]);
-            grad.addColorStop(1, groundBody[1]);
+            grad.addColorStop(0, COLORS.groundBody1);
+            grad.addColorStop(1, COLORS.groundBody2);
             ctx.fillStyle = grad;
             ctx.fillRect(sx, seg.y + 10, seg.w, seg.h - 10);
             for (let i = 0; i < seg.w; i += 8) {
@@ -1980,11 +2098,11 @@
         for (const plat of platforms) {
             const sx = plat.x - camera.x;
             if (sx + plat.w < -20 || sx > W + 20) continue;
-            ctx.fillStyle = '#a67c52';
+            ctx.fillStyle = COLORS.platform;
             ctx.shadowBlur = 8;
             ctx.shadowColor = 'rgba(0,0,0,0.15)';
             ctx.fillRect(sx, plat.y, plat.w, plat.h);
-            ctx.fillStyle = '#8b6b4a';
+            ctx.fillStyle = COLORS.platformDark;
             ctx.fillRect(sx, plat.y + plat.h - 4, plat.w, 4);
             ctx.fillStyle = '#c9a87c';
             ctx.fillRect(sx, plat.y, plat.w, 3);
@@ -1997,11 +2115,11 @@
         for (const mplat of movingPlatforms) {
             const sx = mplat.x - camera.x;
             if (sx + mplat.w < -20 || sx > W + 20) continue;
-            ctx.fillStyle = '#a67c52';
+            ctx.fillStyle = COLORS.platform;
             ctx.shadowBlur = 8;
             ctx.shadowColor = 'rgba(0,0,0,0.2)';
             ctx.fillRect(sx, mplat.y, mplat.w, mplat.h);
-            ctx.fillStyle = '#8b6b4a';
+            ctx.fillStyle = COLORS.platformDark;
             ctx.fillRect(sx, mplat.y + mplat.h - 4, mplat.w, 4);
             ctx.fillStyle = '#c9a87c';
             ctx.fillRect(sx, mplat.y, mplat.w, 3);
@@ -2015,25 +2133,25 @@
             const sx = block.x - camera.x;
             if (sx + block.w < -20 || sx > W + 20) continue;
             if (block.used) {
-                ctx.fillStyle = '#5d4037';
+                ctx.fillStyle = COLORS.blockUsed;
                 ctx.shadowBlur = 6;
                 ctx.shadowColor = 'rgba(0,0,0,0.2)';
                 ctx.fillRect(sx, block.y, block.w, block.h);
-                ctx.fillStyle = '#3e2723';
+                ctx.fillStyle = '#546e7a';
                 ctx.fillRect(sx + 2, block.y + 2, block.w - 4, block.h - 4);
                 ctx.shadowBlur = 0;
                 continue;
             }
             const grad = ctx.createLinearGradient(sx, block.y, sx, block.y + block.h);
-            grad.addColorStop(0, '#f1c40f');
-            grad.addColorStop(1, '#d4a017');
+            grad.addColorStop(0, COLORS.blockQuestion);
+            grad.addColorStop(1, COLORS.blockQuestionDark);
             ctx.fillStyle = grad;
             ctx.shadowBlur = 15;
-            ctx.shadowColor = 'rgba(241,196,15,0.3)';
+            ctx.shadowColor = 'rgba(255,215,0,0.4)';
             ctx.fillRect(sx, block.y, block.w, block.h);
-            ctx.fillStyle = '#f39c12';
+            ctx.fillStyle = '#fbc02d';
             ctx.fillRect(sx + 3, block.y + 3, block.w - 6, block.h - 6);
-            ctx.fillStyle = '#d4a017';
+            ctx.fillStyle = '#f57f17';
             ctx.fillRect(sx, block.y, block.w, 2);
             ctx.fillRect(sx, block.y, 2, block.h);
             ctx.fillRect(sx + block.w - 2, block.y, 2, block.h);
@@ -2051,13 +2169,13 @@
         for (const pipe of pipes) {
             const sx = pipe.x - offsetX;
             if (sx + pipe.w < -20 || sx > W + 20) continue;
-            ctx.fillStyle = '#2e7d32';
+            ctx.fillStyle = COLORS.pipeBody;
             ctx.shadowBlur = 8;
             ctx.shadowColor = 'rgba(0,0,0,0.2)';
             ctx.fillRect(sx + 4, pipe.y, pipe.w - 8, pipe.h);
-            ctx.fillStyle = '#388e3c';
+            ctx.fillStyle = COLORS.pipeLight;
             ctx.fillRect(sx, pipe.y - 6, pipe.w, 8);
-            ctx.fillStyle = '#1b5e20';
+            ctx.fillStyle = COLORS.pipeDark;
             ctx.fillRect(sx + 2, pipe.y - 4, pipe.w - 4, 4);
             ctx.fillStyle = 'rgba(0,0,0,0.2)';
             ctx.fillRect(sx + 2, pipe.y + 4, 4, pipe.h - 8);
@@ -2077,13 +2195,13 @@
         for (const coin of coins) {
             const sx = coin.x - offsetX;
             const sy = coin.y + Math.sin(frameCount * 0.06 + coin.x) * 2;
-            ctx.shadowColor = 'rgba(255, 215, 0, 0.4)';
-            ctx.shadowBlur = 12;
-            ctx.fillStyle = '#ffd700';
+            ctx.shadowColor = 'rgba(255, 215, 0, 0.5)';
+            ctx.shadowBlur = 15;
+            ctx.fillStyle = COLORS.coin;
             ctx.beginPath();
             ctx.arc(sx + coin.w/2, sy + coin.h/2, coin.w/2, 0, Math.PI * 2);
             ctx.fill();
-            ctx.fillStyle = '#ffaa00';
+            ctx.fillStyle = COLORS.coinShine;
             ctx.font = '8px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -2118,7 +2236,7 @@
         for (const cp of checkpoints) {
             const sx = cp.x - camera.x, sy = cp.y;
             if (sx + cp.w < -20 || sx > W + 20) continue;
-            ctx.fillStyle = cp.active ? '#2ecc71' : '#95a5a6';
+            ctx.fillStyle = cp.active ? COLORS.checkpointActive : COLORS.checkpointInactive;
             ctx.shadowColor = cp.active ? 'rgba(46,204,113,0.6)' : 'rgba(0,0,0,0.2)';
             ctx.shadowBlur = 20;
             ctx.beginPath();
@@ -2137,13 +2255,13 @@
     function drawFlag() {
         const fx = FLAG_X - camera.x, fy = FLAG_Y;
         if (fx < -40 || fx > W + 40) return;
-        ctx.fillStyle = '#5d4037';
+        ctx.fillStyle = COLORS.flagPole;
         ctx.shadowBlur = 10;
         ctx.shadowColor = 'rgba(0,0,0,0.2)';
         ctx.fillRect(fx + 10, fy, 6, 90);
         ctx.fillStyle = '#8d6e63';
         ctx.fillRect(fx + 12, fy, 2, 90);
-        ctx.fillStyle = '#f1c40f';
+        ctx.fillStyle = COLORS.flag;
         ctx.shadowColor = 'rgba(241,196,15,0.5)';
         ctx.shadowBlur = 20;
         ctx.beginPath();
@@ -2170,7 +2288,7 @@
             ctx.moveTo(fx + 16, fy + 8);
             ctx.quadraticCurveTo(fx + 40 + wave, fy + 16, fx + 16, fy + 32);
             ctx.fill();
-            ctx.fillStyle = '#f1c40f';
+            ctx.fillStyle = COLORS.flag;
             ctx.font = '14px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -2245,13 +2363,14 @@
         if (gameWon) {
             ctx.fillStyle = 'rgba(0,0,0,0.4)';
             ctx.fillRect(0, 0, W, H);
-            ctx.fillStyle = '#fff';
+            ctx.fillStyle = '#ffd700';
             ctx.font = 'bold 52px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.shadowColor = 'rgba(0,0,0,0.6)';
             ctx.shadowBlur = 20;
             ctx.fillText('🏆 VITÓRIA!', W/2, H/2 - 20);
+            ctx.fillStyle = '#fff';
             ctx.font = '24px Arial';
             ctx.fillText('Parabéns!', W/2, H/2 + 50);
             ctx.shadowBlur = 0;
@@ -2272,20 +2391,21 @@
         } else if (levelComplete && nextLevelTimer > 0) {
             ctx.fillStyle = 'rgba(0,0,0,0.3)';
             ctx.fillRect(0, 0, W, H);
-            ctx.fillStyle = '#fff';
+            ctx.fillStyle = '#ffd700';
             ctx.font = 'bold 40px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.shadowColor = 'rgba(0,0,0,0.5)';
             ctx.shadowBlur = 15;
             ctx.fillText('⭐ Fase concluída!', W/2, H/2 - 10);
+            ctx.fillStyle = '#fff';
             ctx.font = '22px Arial';
             ctx.fillText('Voltando ao mapa...', W/2, H/2 + 50);
             ctx.shadowBlur = 0;
         } else if (paused) {
             ctx.fillStyle = 'rgba(0,0,0,0.4)';
             ctx.fillRect(0, 0, W, H);
-            ctx.fillStyle = '#fff';
+            ctx.fillStyle = '#ffd700';
             ctx.font = 'bold 40px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -2296,7 +2416,7 @@
         }
 
         const progress = Math.min(1, (player ? player.x : 0) / (LEVEL_WIDTH - 100));
-        ctx.fillStyle = 'rgba(0,0,0,0.3)';
+        ctx.fillStyle = 'rgba(0,0,0,0.4)';
         ctx.beginPath();
         ctx.roundRect(W - 170, 12, 150, 10, 6);
         ctx.fill();
@@ -2342,8 +2462,7 @@
     setupVirtualControls();
     gameLoop();
 
-    console.log('🏜️ Fase 2 - Deserto Árido com suporte a áudio personalizado!');
-    console.log('ℹ️ Configure as URLs no objeto SOUND_CONFIG no início do script.');
+    console.log('🏜️ Fase 2 - Deserto Árido com música nativa SNES e cores vibrantes!');
 </script>
 </body>
 </html>
