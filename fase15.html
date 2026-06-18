@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>Fase 5 - Floresta Densa (SNES Style)</title>
+    <title>Fase 15 - Estrela do Norte (SNES Style)</title>
     <style>
         /* ===== ESTILOS OTIMIZADOS PARA MOBILE (SNES) ===== */
         * {
@@ -17,7 +17,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: #0b1a0e;
+            background: #0a0a1a;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             touch-action: none;
             position: fixed;
@@ -28,7 +28,7 @@
             height: 100vh;
             max-width: 100%;
             max-height: 100%;
-            background: #0f1a12;
+            background: #0a0a1a;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -38,7 +38,7 @@
         }
         #gameCanvas {
             display: block;
-            background: #1a3a1e;
+            background: #0a1a3a;
             image-rendering: pixelated;
             max-width: 100%;
             max-height: 100%;
@@ -49,17 +49,16 @@
             border-radius: 8px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9);
             flex-shrink: 0;
-            border: 4px solid #1a3a1e;
+            border: 4px solid #1a2a4a;
         }
 
-        /* Overlay de início */
         .start-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -76,21 +75,20 @@
             border-radius: 8px;
         }
         .start-overlay span {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(100, 200, 255, 0.2);
             padding: 16px 36px;
             border-radius: 60px;
-            border: 3px solid #4caf50;
-            box-shadow: 0 0 60px rgba(76, 175, 80, 0.3);
-            text-shadow: 0 0 20px #4caf50;
+            border: 3px solid #88ddff;
+            box-shadow: 0 0 60px rgba(100, 200, 255, 0.3);
+            text-shadow: 0 0 20px #88ddff;
             font-size: 7vmin;
         }
         .start-overlay small {
             font-size: 3vmin;
             opacity: 0.8;
-            color: #a5d6a7;
+            color: #aaddff;
         }
 
-        /* Controles */
         .controls-overlay {
             position: absolute;
             top: 0;
@@ -143,8 +141,8 @@
         .dpad-btn:active, .dpad-btn.active {
             background: rgba(255, 255, 255, 0.3);
             transform: scale(0.88);
-            border-color: #4caf50;
-            box-shadow: inset 0 0 20px rgba(76, 175, 80, 0.2);
+            border-color: #88ddff;
+            box-shadow: inset 0 0 20px rgba(100, 200, 255, 0.2);
         }
         .dpad-empty {
             background: transparent;
@@ -206,7 +204,6 @@
             max-height: 120px;
         }
 
-        /* Botões superiores */
         .btn-back, .btn-restart, .btn-sound, .btn-pause {
             position: absolute;
             top: 2%;
@@ -277,12 +274,12 @@
             border: 1px solid rgba(255,255,255,0.05);
         }
         .ui-top .level {
-            color: #a5d6a7;
+            color: #88ddff;
             background: rgba(0, 0, 0, 0.3);
             padding: 2px 10px;
             border-radius: 30px;
             font-size: 2.2vmin;
-            text-shadow: 0 0 10px #4caf50;
+            text-shadow: 0 0 10px #88ddff;
         }
         .ui-top .badge {
             display: flex;
@@ -343,7 +340,7 @@
         .touch-feedback {
             position: absolute;
             border-radius: 50%;
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(100, 200, 255, 0.3);
             pointer-events: none;
             animation: touchFade 0.3s ease-out forwards;
             z-index: 100;
@@ -360,8 +357,8 @@
     <canvas id="gameCanvas" width="900" height="500"></canvas>
 
     <div class="start-overlay" id="startOverlay">
-        <span>🌳 TOQUE PARA JOGAR</span>
-        <small>🎵 Música nativa estilo SNES (Floresta)</small>
+        <span>⭐ TOQUE PARA JOGAR</span>
+        <small>🎵 Música nativa estilo SNES (Estrela do Norte)</small>
     </div>
 
     <div class="ui-top" id="uiTop">
@@ -373,7 +370,7 @@
             <span class="badge-item" id="starBadge"><span class="icon">✨</span> ❌</span>
             <span class="badge-item" id="coinBadge"><span class="icon">🪙</span> <span id="coinCount">0</span></span>
         </div>
-        <span class="level" id="levelDisplay">🌳 Fase 5 - Floresta Densa</span>
+        <span class="level" id="levelDisplay">⭐ Fase 15 - Estrela do Norte</span>
         <span class="status" id="statusDisplay">▶ Jogando</span>
     </div>
 
@@ -402,10 +399,9 @@
 
 <script>
     // ================================================================
-    //  CONFIGURAÇÃO DE ÁUDIO (100% nativo, estilo SNES - Floresta)
+    //  CONFIGURAÇÃO DE ÁUDIO (100% nativo, estilo SNES - Estrela do Norte)
     // ================================================================
     const SOUND_CONFIG = {
-        // Sons SFX (opcionais - pode deixar null para sintéticos)
         jump: null,
         shoot: null,
         squish: null,
@@ -419,16 +415,17 @@
         star: null,
         cape: null,
         checkpoint: null,
-        bear: null,
-        plant: null,
-        mushroom: null,
+        // Sons do gelo
+        yeti: null,
+        ice: null,
+        penguin: null,
         music: null,
         volume: 0.25,
         musicVolume: 0.35
     };
 
     // ================================================================
-    //  SISTEMA DE ÁUDIO COM MÚSICA NATIVA (FLORESTA)
+    //  SISTEMA DE ÁUDIO COM MÚSICA NATIVA (ESTRELA DO NORTE)
     // ================================================================
     class SoundManager {
         constructor() {
@@ -451,16 +448,15 @@
             try {
                 this.ctx = new (window.AudioContext || window.webkitAudioContext)();
                 this.createSyntheticSounds();
-                this.createNativeMusic(); // Música para a floresta
+                this.createNativeMusic();
                 this.initialized = true;
-                console.log('🎵 Áudio nativo inicializado (estilo SNES - Floresta)');
+                console.log('🎵 Áudio nativo inicializado (estilo SNES - Estrela do Norte)');
             } catch (e) {
                 console.warn('Web Audio não suportada.');
                 this.enabled = false;
             }
         }
 
-        // ===== Sons SFX sintéticos =====
         createSyntheticSounds() {
             const ctx = this.ctx;
             const vol = this.volume;
@@ -478,9 +474,9 @@
                 star: (t) => this._arpeggio(t, [1047,1319,1568], 0.3, vol * 1.2),
                 cape: (t) => this._osc(t, 200, 500, 0.2, 'sine', vol * 0.8),
                 checkpoint: (t) => this._arpeggio(t, [659,784,1047], 0.25, vol * 1.2),
-                bear: (t) => this._osc(t, 150, 300, 0.3, 'sawtooth', vol * 0.8),
-                plant: (t) => this._osc(t, 400, 200, 0.3, 'sine', vol * 0.7),
-                mushroom: (t) => this._osc(t, 700, 500, 0.15, 'square', vol * 0.9),
+                yeti: (t) => this._osc(t, 150, 80, 0.25, 'sawtooth', vol * 0.6),
+                ice: (t) => this._osc(t, 800, 400, 0.08, 'sine', vol * 0.7),
+                penguin: (t) => this._osc(t, 500, 700, 0.1, 'square', vol * 0.8),
             };
         }
 
@@ -515,68 +511,36 @@
             });
         }
 
-        // ===== MÚSICA NATIVA PARA A FASE 5 (Floresta) =====
         createNativeMusic() {
-            // Melodia alegre com sons de flauta, estilo floresta
+            // Melodia gelada e etérea (escala maior com toque de sinos)
             const melody = [
-                // Frase 1
-                {freq: 392, dur: 0.2}, // G4
-                {freq: 0, dur: 0.05},
-                {freq: 523, dur: 0.2}, // C5
-                {freq: 0, dur: 0.05},
-                {freq: 587, dur: 0.3}, // D5
-                {freq: 0, dur: 0.05},
-                {freq: 523, dur: 0.2},
-                {freq: 0, dur: 0.05},
-                // Frase 2
-                {freq: 392, dur: 0.2},
-                {freq: 0, dur: 0.05},
-                {freq: 587, dur: 0.3},
-                {freq: 0, dur: 0.05},
-                {freq: 659, dur: 0.3}, // E5
-                {freq: 0, dur: 0.05},
-                {freq: 587, dur: 0.2},
-                {freq: 0, dur: 0.05},
-                // Frase 3
-                {freq: 523, dur: 0.2},
-                {freq: 0, dur: 0.05},
-                {freq: 440, dur: 0.2}, // A4
-                {freq: 0, dur: 0.05},
-                {freq: 523, dur: 0.3},
-                {freq: 0, dur: 0.05},
-                {freq: 440, dur: 0.2},
-                {freq: 0, dur: 0.05},
-                // Frase 4
-                {freq: 659, dur: 0.3},
-                {freq: 0, dur: 0.05},
-                {freq: 587, dur: 0.3},
-                {freq: 0, dur: 0.05},
-                {freq: 523, dur: 0.4},
-                {freq: 0, dur: 0.10},
-                {freq: 392, dur: 0.4},
-                {freq: 0, dur: 0.10},
+                {freq: 440, dur: 0.3}, {freq: 0, dur: 0.05},
+                {freq: 523, dur: 0.2}, {freq: 0, dur: 0.05},
+                {freq: 587, dur: 0.3}, {freq: 0, dur: 0.05},
+                {freq: 523, dur: 0.2}, {freq: 0, dur: 0.05},
+                {freq: 440, dur: 0.3}, {freq: 0, dur: 0.05},
+                {freq: 587, dur: 0.3}, {freq: 0, dur: 0.05},
+                {freq: 659, dur: 0.3}, {freq: 0, dur: 0.05},
+                {freq: 587, dur: 0.2}, {freq: 0, dur: 0.05},
+                {freq: 440, dur: 0.4}, {freq: 0, dur: 0.10},
+                {freq: 392, dur: 0.4}, {freq: 0, dur: 0.10},
+                {freq: 440, dur: 0.3}, {freq: 0, dur: 0.05},
+                {freq: 587, dur: 0.3}, {freq: 0, dur: 0.05},
+                {freq: 659, dur: 0.4}, {freq: 0, dur: 0.10},
+                {freq: 587, dur: 0.3}, {freq: 0, dur: 0.05},
+                {freq: 523, dur: 0.3}, {freq: 0, dur: 0.05},
+                {freq: 440, dur: 0.4}, {freq: 0, dur: 0.10},
             ];
-
-            // Baixo saltitante
             const bass = [
-                {freq: 130, dur: 0.4},
-                {freq: 0, dur: 0.05},
-                {freq: 130, dur: 0.4},
-                {freq: 0, dur: 0.05},
-                {freq: 130, dur: 0.4},
-                {freq: 0, dur: 0.05},
-                {freq: 130, dur: 0.4},
-                {freq: 0, dur: 0.05},
-                {freq: 130, dur: 0.4},
-                {freq: 0, dur: 0.05},
-                {freq: 130, dur: 0.4},
-                {freq: 0, dur: 0.05},
-                {freq: 130, dur: 0.4},
-                {freq: 0, dur: 0.05},
-                {freq: 130, dur: 0.4},
-                {freq: 0, dur: 0.05},
+                {freq: 110, dur: 0.4}, {freq: 0, dur: 0.05},
+                {freq: 110, dur: 0.4}, {freq: 0, dur: 0.05},
+                {freq: 110, dur: 0.4}, {freq: 0, dur: 0.05},
+                {freq: 110, dur: 0.4}, {freq: 0, dur: 0.05},
+                {freq: 110, dur: 0.4}, {freq: 0, dur: 0.05},
+                {freq: 110, dur: 0.4}, {freq: 0, dur: 0.05},
+                {freq: 110, dur: 0.4}, {freq: 0, dur: 0.05},
+                {freq: 110, dur: 0.4}, {freq: 0, dur: 0.05},
             ];
-
             this.musicNotes = [];
             let currentTime = 0;
             for (let note of melody) {
@@ -597,34 +561,27 @@
             this.musicDuration = Math.max(currentTime, bassTime);
         }
 
-        // Toca a música nativa
         playMusic() {
             if (!this.enabled || !this.initialized || this.musicPlaying || !this.ctx) return;
             this.musicPlaying = true;
-
             this.musicGain = this.ctx.createGain();
             this.musicGain.gain.setValueAtTime(this.musicVolume, this.ctx.currentTime);
             this.musicGain.connect(this.ctx.destination);
-
             this.scheduleMusic();
         }
 
         scheduleMusic() {
             if (!this.musicPlaying || !this.enabled) return;
-
             const startTime = this.ctx.currentTime;
             const gain = this.musicGain;
-
             for (let i = 0; i < this.musicNotes.length; i++) {
                 const note = this.musicNotes[i];
                 const time = startTime + note.time;
                 const freq = note.freq;
                 const dur = note.dur;
                 const type = note.type;
-
-                let oscType = (type === 'bass') ? 'sawtooth' : 'square';
+                let oscType = (type === 'bass') ? 'sawtooth' : 'sine';
                 let volFactor = (type === 'bass') ? 0.6 : 0.9;
-
                 setTimeout(() => {
                     if (!this.musicPlaying || !this.enabled || !this.ctx) return;
                     try {
@@ -641,7 +598,6 @@
                     } catch (e) {}
                 }, (time - this.ctx.currentTime) * 1000);
             }
-
             const totalDuration = this.musicDuration + 0.3;
             setTimeout(() => {
                 if (this.musicPlaying && this.enabled) {
@@ -665,7 +621,6 @@
             }
         }
 
-        // ===== Interface pública =====
         playSound(name) {
             if (!this.enabled || !this.initialized || !this.ctx) return;
             if (this.buffers[name]) {
@@ -701,7 +656,7 @@
     const sound = new SoundManager();
 
     // ================================================================
-    //  SISTEMA DE PARTÍCULAS (com folhas)
+    //  SISTEMA DE PARTÍCULAS (neve, aurora, estrelas)
     // ================================================================
     let particles = [];
     class Particle {
@@ -728,7 +683,7 @@
             if (this.type === 'circle') {
                 ctx.fillStyle = this.color;
                 ctx.shadowColor = this.color;
-                ctx.shadowBlur = 15;
+                ctx.shadowBlur = 10;
                 ctx.beginPath();
                 ctx.arc(0, 0, r, 0, Math.PI * 2);
                 ctx.fill();
@@ -746,22 +701,23 @@
                 }
                 ctx.closePath();
                 ctx.fill();
-            } else if (this.type === 'spark') {
-                ctx.strokeStyle = this.color;
-                ctx.shadowColor = this.color;
-                ctx.shadowBlur = 12;
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(-r, 0);
-                ctx.lineTo(r, 0);
-                ctx.stroke();
-            } else if (this.type === 'leaf') {
+            } else if (this.type === 'snow') {
                 ctx.fillStyle = this.color;
-                ctx.shadowColor = '#2e7d32';
-                ctx.shadowBlur = 8;
+                ctx.shadowColor = 'rgba(200,220,255,0.3)';
+                ctx.shadowBlur = 10;
                 ctx.beginPath();
-                ctx.ellipse(0, 0, r, r * 0.6, this.rotation, 0, Math.PI * 2);
+                ctx.arc(0, 0, r, 0, Math.PI * 2);
                 ctx.fill();
+                ctx.shadowBlur = 0;
+            } else if (this.type === 'ice') {
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = 'rgba(100,200,255,0.4)';
+                ctx.shadowBlur = 15;
+                ctx.fillRect(-r/2, -r/2, r, r);
+                ctx.shadowBlur = 0;
+                ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(-r/2, -r/2, r, r);
             }
             ctx.restore();
             return true;
@@ -775,54 +731,135 @@
             const vx = Math.cos(angle) * speed + (config.vx || 0);
             const vy = Math.sin(angle) * speed + (config.vy || -1);
             const radius = (config.radius || 3) * (0.5 + Math.random() * 0.5);
-            const color = config.color || '#ffd700';
+            const color = config.color || '#88ddff';
             const life = (config.life || 30) * (0.7 + Math.random() * 0.3);
-            const type = config.type || 'circle';
-            const gravity = config.gravity || 0.05;
+            const type = config.type || 'snow';
+            const gravity = config.gravity || -0.02;
             particles.push(new Particle(x, y, vx, vy, radius, color, life, type, gravity));
         }
     }
 
-    // ===== Folhas caindo =====
-    let fallingLeaves = [];
-    function initLeaves() {
-        for (let i = 0; i < 30; i++) {
-            fallingLeaves.push({
+    // ===== Neve caindo =====
+    let snowflakes = [];
+    function initSnow() {
+        for (let i = 0; i < 80; i++) {
+            snowflakes.push({
                 x: Math.random() * 1200,
-                y: Math.random() * 600,
-                r: 2 + Math.random() * 4,
-                speed: 0.2 + Math.random() * 0.5,
+                y: Math.random() * 500,
+                r: 1 + Math.random() * 4,
+                speed: 0.3 + Math.random() * 0.8,
                 wobble: Math.random() * Math.PI * 2,
                 wobbleSpeed: 0.01 + Math.random() * 0.02,
-                color: ['#4caf50', '#66bb6a', '#388e3c', '#81c784', '#a5d6a7'][Math.floor(Math.random() * 5)]
+                alpha: 0.3 + Math.random() * 0.5
             });
         }
     }
-    function drawLeaves(offsetX) {
-        for (const lf of fallingLeaves) {
-            const sx = ((lf.x - offsetX * 0.2) % (W + 100) + W + 100) % (W + 100) - 50;
-            const sy = (lf.y + frameCount * lf.speed) % (H + 30);
-            lf.wobble += lf.wobbleSpeed;
-            const wx = sx + Math.sin(lf.wobble) * 15;
+    function drawSnow(offsetX) {
+        for (const s of snowflakes) {
+            const sx = ((s.x - offsetX * 0.05) % (W + 100) + W + 100) % (W + 100) - 50;
+            const sy = (s.y + frameCount * s.speed) % (H + 30);
+            s.wobble += s.wobbleSpeed;
+            const wx = sx + Math.sin(s.wobble) * 8;
             ctx.save();
-            ctx.globalAlpha = 0.5 + Math.sin(lf.wobble * 0.5) * 0.15;
-            ctx.fillStyle = lf.color;
-            ctx.shadowColor = 'rgba(0,50,0,0.2)';
-            ctx.shadowBlur = 5;
+            ctx.globalAlpha = s.alpha;
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = 'rgba(200,220,255,0.2)';
+            ctx.shadowBlur = 8;
             ctx.beginPath();
-            ctx.ellipse(wx, sy, lf.r, lf.r * 0.5, Math.sin(lf.wobble * 0.7) * 0.5, 0, Math.PI * 2);
+            ctx.arc(wx, sy, s.r, 0, Math.PI * 2);
             ctx.fill();
             ctx.restore();
         }
     }
 
+    // ===== Aurora Boreal =====
+    let auroraLines = [];
+    function initAurora() {
+        for (let i = 0; i < 6; i++) {
+            auroraLines.push({
+                y: 30 + Math.random() * 100,
+                width: 150 + Math.random() * 250,
+                speed: 0.2 + Math.random() * 0.4,
+                phase: Math.random() * Math.PI * 2,
+                colors: [
+                    `rgba(${100 + Math.random() * 80}, ${200 + Math.random() * 55}, 255, ${0.05 + Math.random() * 0.1})`,
+                    `rgba(${150 + Math.random() * 80}, ${100 + Math.random() * 80}, 255, ${0.05 + Math.random() * 0.1})`,
+                    `rgba(${100 + Math.random() * 50}, 255, ${150 + Math.random() * 80}, ${0.05 + Math.random() * 0.1})`
+                ]
+            });
+        }
+    }
+    function drawAurora(offsetX) {
+        for (const a of auroraLines) {
+            const sx = -offsetX * 0.05;
+            ctx.save();
+            ctx.globalAlpha = 0.3;
+            for (let i = 0; i < a.colors.length; i++) {
+                ctx.fillStyle = a.colors[i];
+                ctx.shadowBlur = 60;
+                ctx.shadowColor = a.colors[i];
+                ctx.beginPath();
+                const wave = Math.sin(frameCount * 0.008 + a.phase + i * 0.5) * 20;
+                const wave2 = Math.sin(frameCount * 0.012 + a.phase + i * 0.7 + 1) * 15;
+                ctx.moveTo(sx - a.width / 2, a.y + wave);
+                for (let x = -a.width / 2; x <= a.width / 2; x += 2) {
+                    const wy = a.y + wave + Math.sin(x * 0.02 + frameCount * 0.01 + a.phase + i) * 8 + wave2 * 0.3;
+                    ctx.lineTo(sx + x, wy);
+                }
+                for (let x = a.width / 2; x >= -a.width / 2; x -= 2) {
+                    const wy = a.y + wave + 20 + Math.sin(x * 0.02 + frameCount * 0.01 + a.phase + i + 0.5) * 8 + wave2 * 0.3;
+                    ctx.lineTo(sx + x, wy);
+                }
+                ctx.closePath();
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+    }
+
+    // ===== Estrelas cintilantes =====
+    let stars = [];
+    function initStars() {
+        for (let i = 0; i < 60; i++) {
+            stars.push({
+                x: Math.random() * 1200,
+                y: Math.random() * 200,
+                size: 0.5 + Math.random() * 2,
+                twinkle: Math.random() * Math.PI * 2,
+                speed: 0.02 + Math.random() * 0.04
+            });
+        }
+    }
+    function drawStars(offsetX) {
+        for (const s of stars) {
+            const sx = ((s.x - offsetX * 0.02) % (W + 200) + W + 200) % (W + 200) - 100;
+            const alpha = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(s.twinkle + frameCount * s.speed));
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = '#88ddff';
+            ctx.shadowBlur = 12;
+            ctx.beginPath();
+            ctx.arc(sx, s.y, s.size, 0, Math.PI * 2);
+            ctx.fill();
+            if (s.size > 1.2) {
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = '#aaccff';
+                ctx.beginPath();
+                ctx.arc(sx, s.y, s.size * 0.4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+    }
+
     // ================================================================
-    //  CONFIGURAÇÕES DA FASE 5 (Floresta) - Cores SNES
+    //  CONFIGURAÇÕES DA FASE 15 (Estrela do Norte)
     // ================================================================
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const W = 900, H = 500;
-    const GRAVITY = 0.6;
+    const GRAVITY = 0.5;
     const FRICTION = 0.85;
     const MAX_SPEED = 5.8;
     const JUMP_FORCE = -11.0;
@@ -838,33 +875,30 @@
     const starBadge = document.getElementById('starBadge');
     const coinCountSpan = document.getElementById('coinCount');
 
-    // Cores estilo SNES para tema floresta
+    // Cores do gelo
     const COLORS = {
-        skyTop: '#1a3a1e',
-        skyBottom: '#2a5a2e',
-        groundTop: '#3a6a3e',
-        groundBody1: '#2a4a2e',
-        groundBody2: '#1a3a1e',
-        platform: '#4a3a2a',
-        platformDark: '#3a2a1a',
-        blockQuestion: '#ffd700',
-        blockQuestionDark: '#f9a825',
-        blockUsed: '#3a4a3a',
-        pipeBody: '#2e7d32',
-        pipeDark: '#1b5e20',
-        pipeLight: '#4caf50',
-        coin: '#ffd700',
-        coinShine: '#ffaa00',
+        skyTop: '#0a1a3a',
+        skyBottom: '#1a4a6a',
+        wall: '#2a4a6a',
+        floor: '#4a7a9a',
+        floorDark: '#2a5a7a',
+        platform: '#6aaaca',
+        platformDark: '#4a8aaa',
+        blockQuestion: '#88ddff',
+        blockQuestionDark: '#55aadd',
+        blockUsed: '#2a4a5a',
+        coin: '#88ddff',
+        coinShine: '#aaddff',
         checkpointActive: '#2ecc71',
-        checkpointInactive: '#5a5a4a',
+        checkpointInactive: '#4a6a7a',
         flagPole: '#5d4037',
-        flag: '#f1c40f',
+        flag: '#88ddff',
         playerBody: '#e74c3c',
         playerOveralls: '#1a5276',
         playerSkin: '#fdbcb4',
         playerHat: '#c0392b',
-        enemyBody: '#6d4c41',
-        enemyDark: '#4e342e',
+        enemyBody: '#4a7a9a',
+        enemyDark: '#2a5a7a',
         enemyEye: '#fff',
         enemyPupil: '#1a1a2e',
         powerupFire: '#ff6b00',
@@ -872,102 +906,117 @@
         powerupStar: '#f1c40f',
     };
 
-    // Dados da fase 5 (original, preservados)
-    const LEVEL_WIDTH = 3800;
+    // ===== Dados da Fase 15 =====
+    const LEVEL_WIDTH = 4400;
     const FLAG_X = LEVEL_WIDTH - 80;
     const FLAG_Y = GROUND_Y - 80;
 
+    // Chão de gelo
     const groundSegments = [
-        { x: 0, y: GROUND_Y, w: 500, h: GROUND_H },
-        { x: 650, y: GROUND_Y, w: 400, h: GROUND_H },
-        { x: 1200, y: GROUND_Y, w: 500, h: GROUND_H },
-        { x: 1850, y: GROUND_Y, w: 400, h: GROUND_H },
-        { x: 2400, y: GROUND_Y, w: 1400, h: GROUND_H },
+        { x: 0, y: GROUND_Y, w: 280, h: GROUND_H },
+        { x: 360, y: GROUND_Y - 20, w: 120, h: GROUND_H - 10 },
+        { x: 560, y: GROUND_Y - 40, w: 160, h: GROUND_H - 20 },
+        { x: 800, y: GROUND_Y - 60, w: 140, h: GROUND_H - 30 },
+        { x: 1020, y: GROUND_Y - 80, w: 180, h: GROUND_H - 40 },
+        { x: 1280, y: GROUND_Y - 100, w: 160, h: GROUND_H - 50 },
+        { x: 1520, y: GROUND_Y - 80, w: 180, h: GROUND_H - 40 },
+        { x: 1780, y: GROUND_Y - 60, w: 140, h: GROUND_H - 30 },
+        { x: 2000, y: GROUND_Y - 40, w: 160, h: GROUND_H - 20 },
+        { x: 2240, y: GROUND_Y - 20, w: 120, h: GROUND_H - 10 },
+        { x: 2440, y: GROUND_Y, w: 1960, h: GROUND_H },
     ];
 
-    const platforms = [
-        { x: 520, y: 380, w: 80, h: 18 },
-        { x: 850, y: 380, w: 80, h: 18 },
-        { x: 1350, y: 380, w: 80, h: 18 },
-        { x: 1700, y: 380, w: 80, h: 18 },
-        { x: 2200, y: 380, w: 80, h: 18 },
-        { x: 400, y: 300, w: 60, h: 16 },
-        { x: 1000, y: 320, w: 60, h: 16 },
-        { x: 1550, y: 300, w: 60, h: 16 },
-        { x: 2000, y: 320, w: 60, h: 16 },
-    ];
+    // Plataformas (blocos de gelo)
+    const platforms = [];
+    for (let i = 0; i < 30; i++) {
+        const x = 40 + i * 140 + Math.sin(i * 0.7) * 40;
+        const y = 280 + (i % 4) * 45 + Math.sin(i * 0.5) * 20;
+        platforms.push({ x, y, w: 60, h: 18, type: 'ice' });
+    }
 
+    // Plataformas móveis (blocos de gelo deslizantes)
     const movingPlatforms = [
-        { x: 700, y: 340, w: 80, h: 16, xMin: 620, xMax: 820, speed: 0.5, dir: 1 },
-        { x: 1400, y: 330, w: 80, h: 16, xMin: 1300, xMax: 1520, speed: 0.6, dir: -1 },
-        { x: 2100, y: 340, w: 80, h: 16, xMin: 2020, xMax: 2220, speed: 0.5, dir: 1 },
+        { x: 400, y: 360, w: 80, h: 16, xMin: 320, xMax: 520, speed: 0.6, dir: 1, type: 'ice' },
+        { x: 800, y: 320, w: 80, h: 16, xMin: 720, xMax: 920, speed: 0.7, dir: -1, type: 'ice' },
+        { x: 1200, y: 280, w: 80, h: 16, xMin: 1120, xMax: 1320, speed: 0.8, dir: 1, type: 'ice' },
+        { x: 1650, y: 300, w: 80, h: 16, xMin: 1570, xMax: 1770, speed: 0.6, dir: -1, type: 'ice' },
+        { x: 2100, y: 340, w: 80, h: 16, xMin: 2020, xMax: 2220, speed: 0.7, dir: 1, type: 'ice' },
     ];
 
+    // Blocos de pergunta (estrelas)
     const questionBlocks = [
-        { x: 200, y: 355, w: 36, h: 36, powerUp: 'fire' },
-        { x: 700, y: 355, w: 36, h: 36, powerUp: 'cape' },
-        { x: 1300, y: 355, w: 36, h: 36, powerUp: 'star' },
-        { x: 1900, y: 355, w: 36, h: 36, powerUp: 'fire' },
-        { x: 2500, y: 355, w: 36, h: 36, powerUp: 'cape' },
+        { x: 300, y: 320, w: 36, h: 36, powerUp: 'fire' },
+        { x: 700, y: 280, w: 36, h: 36, powerUp: 'cape' },
+        { x: 1100, y: 240, w: 36, h: 36, powerUp: 'star' },
+        { x: 1500, y: 260, w: 36, h: 36, powerUp: 'fire' },
+        { x: 1900, y: 300, w: 36, h: 36, powerUp: 'cape' },
+        { x: 2300, y: 340, w: 36, h: 36, powerUp: 'star' },
+        { x: 2700, y: 380, w: 36, h: 36, powerUp: 'fire' },
+        { x: 3100, y: 400, w: 36, h: 36, powerUp: 'cape' },
     ];
 
-    const coinsData = [
-        { x: 150, y: GROUND_Y - 50, w: 12, h: 12 },
-        { x: 250, y: GROUND_Y - 50, w: 12, h: 12 },
-        { x: 380, y: GROUND_Y - 80, w: 12, h: 12 },
-        { x: 450, y: GROUND_Y - 80, w: 12, h: 12 },
-        { x: 550, y: GROUND_Y - 50, w: 12, h: 12 },
-        { x: 800, y: GROUND_Y - 80, w: 12, h: 12 },
-        { x: 900, y: GROUND_Y - 80, w: 12, h: 12 },
-        { x: 1100, y: GROUND_Y - 50, w: 12, h: 12 },
-        { x: 1250, y: GROUND_Y - 80, w: 12, h: 12 },
-        { x: 1450, y: GROUND_Y - 80, w: 12, h: 12 },
-        { x: 1600, y: GROUND_Y - 50, w: 12, h: 12 },
-        { x: 1850, y: GROUND_Y - 80, w: 12, h: 12 },
-        { x: 2100, y: GROUND_Y - 50, w: 12, h: 12 },
-        { x: 2300, y: GROUND_Y - 50, w: 12, h: 12 },
-        { x: 2500, y: GROUND_Y - 80, w: 12, h: 12 },
-    ];
+    // Moedas (cristais de gelo)
+    const coinsData = [];
+    for (let x = 80; x < LEVEL_WIDTH - 80; x += 65) {
+        const y = GROUND_Y - 40 - Math.sin(x * 0.04) * 45 - Math.sin(x * 0.07) * 20;
+        coinsData.push({ x, y, w: 12, h: 12 });
+        if (x % 140 < 20) {
+            coinsData.push({ x: x + 25, y: y - 25, w: 12, h: 12 });
+        }
+    }
 
+    // Espinhos (estalactites de gelo)
     const spikes = [
-        { x: 300, y: GROUND_Y - 16, w: 20, h: 16 },
-        { x: 320, y: GROUND_Y - 16, w: 20, h: 16 },
-        { x: 950, y: GROUND_Y - 16, w: 20, h: 16 },
-        { x: 970, y: GROUND_Y - 16, w: 20, h: 16 },
-        { x: 1650, y: GROUND_Y - 16, w: 20, h: 16 },
-        { x: 1670, y: GROUND_Y - 16, w: 20, h: 16 },
-        { x: 2300, y: GROUND_Y - 16, w: 20, h: 16 },
-        { x: 2320, y: GROUND_Y - 16, w: 20, h: 16 },
+        { x: 100, y: GROUND_Y - 16, w: 20, h: 16 },
+        { x: 120, y: GROUND_Y - 16, w: 20, h: 16 },
+        { x: 380, y: GROUND_Y - 20 - 16, w: 20, h: 16 },
+        { x: 400, y: GROUND_Y - 20 - 16, w: 20, h: 16 },
+        { x: 580, y: GROUND_Y - 40 - 16, w: 20, h: 16 },
+        { x: 600, y: GROUND_Y - 40 - 16, w: 20, h: 16 },
+        { x: 820, y: GROUND_Y - 60 - 16, w: 20, h: 16 },
+        { x: 840, y: GROUND_Y - 60 - 16, w: 20, h: 16 },
+        { x: 1040, y: GROUND_Y - 80 - 16, w: 20, h: 16 },
+        { x: 1060, y: GROUND_Y - 80 - 16, w: 20, h: 16 },
+        { x: 1300, y: GROUND_Y - 100 - 16, w: 20, h: 16 },
+        { x: 1320, y: GROUND_Y - 100 - 16, w: 20, h: 16 },
+        { x: 1540, y: GROUND_Y - 80 - 16, w: 20, h: 16 },
+        { x: 1560, y: GROUND_Y - 80 - 16, w: 20, h: 16 },
+        { x: 1800, y: GROUND_Y - 60 - 16, w: 20, h: 16 },
+        { x: 1820, y: GROUND_Y - 60 - 16, w: 20, h: 16 },
+        { x: 2020, y: GROUND_Y - 40 - 16, w: 20, h: 16 },
+        { x: 2040, y: GROUND_Y - 40 - 16, w: 20, h: 16 },
+        { x: 2260, y: GROUND_Y - 20 - 16, w: 20, h: 16 },
+        { x: 2280, y: GROUND_Y - 20 - 16, w: 20, h: 16 },
     ];
 
+    // Checkpoints (faróis)
     const checkpointsData = [
-        { x: 900, y: GROUND_Y - 20, w: 20, h: 20, active: false },
-        { x: 1900, y: GROUND_Y - 20, w: 20, h: 20, active: false },
+        { x: 500, y: GROUND_Y - 20 - 20, w: 20, h: 20, active: false },
+        { x: 1100, y: GROUND_Y - 80 - 20, w: 20, h: 20, active: false },
+        { x: 1800, y: GROUND_Y - 60 - 20, w: 20, h: 20, active: false },
+        { x: 2500, y: GROUND_Y - 20 - 20, w: 20, h: 20, active: false },
     ];
 
+    // Inimigos: yetis, pingüins, bolas de neve
     const enemyData = [
-        { x: 150, y: GROUND_Y - 32, type: 'standard' },
-        { x: 350, y: GROUND_Y - 32, type: 'standard' },
-        { x: 550, y: GROUND_Y - 32, type: 'standard' },
-        { x: 750, y: GROUND_Y - 32, type: 'standard' },
-        { x: 500, y: GROUND_Y - 32, type: 'bear' },
-        { x: 1100, y: GROUND_Y - 32, type: 'bear' },
-        { x: 1700, y: GROUND_Y - 32, type: 'bear' },
-        { x: 2300, y: GROUND_Y - 32, type: 'bear' },
-        { x: 650, y: GROUND_Y - 32, type: 'plant' },
-        { x: 1250, y: GROUND_Y - 32, type: 'plant' },
-        { x: 1850, y: GROUND_Y - 32, type: 'plant' },
-        { x: 2450, y: GROUND_Y - 32, type: 'plant' },
-        { x: 400, y: GROUND_Y - 32, type: 'mushroom' },
-        { x: 800, y: GROUND_Y - 32, type: 'mushroom' },
-        { x: 1400, y: GROUND_Y - 32, type: 'mushroom' },
-        { x: 2000, y: GROUND_Y - 32, type: 'mushroom' },
+        { x: 200, y: GROUND_Y - 32, type: 'yeti' },
+        { x: 450, y: GROUND_Y - 20 - 32, type: 'yeti' },
+        { x: 700, y: GROUND_Y - 40 - 32, type: 'penguin' },
+        { x: 950, y: GROUND_Y - 60 - 32, type: 'yeti' },
+        { x: 1200, y: GROUND_Y - 80 - 32, type: 'iceball' },
+        { x: 1450, y: GROUND_Y - 100 - 32, type: 'penguin' },
+        { x: 1700, y: GROUND_Y - 80 - 32, type: 'yeti' },
+        { x: 1950, y: GROUND_Y - 60 - 32, type: 'iceball' },
+        { x: 2200, y: GROUND_Y - 40 - 32, type: 'penguin' },
+        { x: 2450, y: GROUND_Y - 20 - 32, type: 'yeti' },
+        { x: 2700, y: GROUND_Y - 32, type: 'iceball' },
+        { x: 3000, y: GROUND_Y - 32, type: 'penguin' },
+        { x: 3300, y: GROUND_Y - 32, type: 'yeti' },
+        { x: 3600, y: GROUND_Y - 32, type: 'iceball' },
     ];
 
-    const pipes = [
-        { x: 450, y: GROUND_Y - 60, w: 40, h: 60, type: 'entry', targetLevel: 10, exitX: 100, exitY: GROUND_Y - 40 },
-        { x: 1600, y: GROUND_Y - 60, w: 40, h: 60, type: 'entry', targetLevel: 11, exitX: 150, exitY: GROUND_Y - 40 },
-    ];
+    // Canos (não usado)
+    const pipes = [];
 
     // ================================================================
     //  ESTADO DO JOGO
@@ -976,6 +1025,7 @@
     let enemies = [];
     let powerUps = [];
     let projectiles = [];
+    let enemyProjectiles = [];
     let coins = [];
     let checkpoints = [];
     let score = 0, lives = 3, totalCoins = 0;
@@ -990,7 +1040,7 @@
     const keys = {};
 
     // ================================================================
-    //  CLASSE PLAYER (idêntica à fase 2)
+    //  CLASSE PLAYER (idêntica à fase 11)
     // ================================================================
     class Player {
         constructor() {
@@ -1050,7 +1100,7 @@
                 this.bufferTimer = 0;
                 sound.playSound('jump');
                 emitParticles(this.x + this.w/2, this.y + this.h, 8, {
-                    color: '#6a9a6a', radius: 3, speed: 2, life: 20, gravity: 0.1, vy: -1, type: 'leaf'
+                    color: '#88ddff', radius: 3, speed: 2, life: 20, gravity: -0.02, vy: -1, type: 'snow'
                 });
                 if (navigator.vibrate) navigator.vibrate(10);
             }
@@ -1063,7 +1113,7 @@
                 if (this.capeTimer % 4 === 0) {
                     sound.playSound('cape');
                     emitParticles(this.x + this.w/2, this.y + this.h/2, 2, {
-                        color: '#ff6b6b', radius: 4, speed: 1.5, life: 15, gravity: -0.05, vy: -1
+                        color: '#88ddff', radius: 4, speed: 1.5, life: 15, gravity: -0.05, vy: -1, type: 'snow'
                     });
                 }
             } else {
@@ -1088,7 +1138,7 @@
                         this.capeTimer = 40;
                         if (Math.abs(this.vx) > 1) {
                             emitParticles(this.x + this.w/2, this.y + this.h, 3, {
-                                color: '#4a7a4a', radius: 2, speed: 1, life: 15, gravity: 0.05, vy: -0.5, type: 'leaf'
+                                color: '#4a7a9a', radius: 2, speed: 1, life: 15, gravity: -0.01, vy: -0.5, type: 'snow'
                             });
                         }
                     }
@@ -1167,7 +1217,7 @@
                     powerUps.push(pu);
                     sound.playSound('powerup');
                     emitParticles(block.x + block.w/2, block.y, 15, {
-                        color: '#ffd700', radius: 4, speed: 3, life: 25, gravity: 0.05, vy: -2, type: 'star'
+                        color: '#88ddff', radius: 4, speed: 3, life: 25, gravity: -0.02, vy: -2, type: 'star'
                     });
                 }
             }
@@ -1180,21 +1230,21 @@
                         this.hasPower = true;
                         sound.playSound('powerup');
                         emitParticles(pu.x + pu.w/2, pu.y + pu.h/2, 20, {
-                            color: '#ff6600', radius: 5, speed: 4, life: 30, gravity: 0.02, vy: -1, type: 'spark'
+                            color: '#ff6600', radius: 5, speed: 4, life: 30, gravity: -0.02, vy: -1, type: 'star'
                         });
                     } else if (pu.type === 'cape') {
                         this.hasCape = true;
                         this.capeTimer = 80;
                         sound.playSound('cape');
                         emitParticles(pu.x + pu.w/2, pu.y + pu.h/2, 20, {
-                            color: '#e74c3c', radius: 5, speed: 3, life: 25, gravity: 0.02, vy: -1, type: 'star'
+                            color: '#e74c3c', radius: 5, speed: 3, life: 25, gravity: -0.02, vy: -1, type: 'star'
                         });
                     } else if (pu.type === 'star') {
                         this.invincibleTimer = 600;
                         this.invincible = true;
                         sound.playSound('star');
                         emitParticles(pu.x + pu.w/2, pu.y + pu.h/2, 30, {
-                            color: '#f1c40f', radius: 6, speed: 5, life: 35, gravity: 0.01, vy: -2, type: 'star'
+                            color: '#f1c40f', radius: 6, speed: 5, life: 35, gravity: -0.01, vy: -2, type: 'star'
                         });
                     }
                     powerUps.splice(i, 1);
@@ -1212,7 +1262,7 @@
                     score += 100;
                     sound.playSound('coin');
                     emitParticles(coin.x + coin.w/2, coin.y + coin.h/2, 10, {
-                        color: '#ffd700', radius: 3, speed: 2, life: 20, gravity: 0.05, vy: -1.5, type: 'circle'
+                        color: '#88ddff', radius: 3, speed: 2, life: 20, gravity: -0.02, vy: -1.5, type: 'star'
                     });
                     updateUI();
                 }
@@ -1228,7 +1278,7 @@
                     sound.playSound('checkpoint');
                     statusSpan.textContent = '🏁 Checkpoint!';
                     emitParticles(cp.x + cp.w/2, cp.y + cp.h/2, 20, {
-                        color: '#2ecc71', radius: 5, speed: 3, life: 30, gravity: 0.02, vy: -1, type: 'star'
+                        color: '#2ecc71', radius: 5, speed: 3, life: 30, gravity: -0.02, vy: -1, type: 'star'
                     });
                     setTimeout(() => { if (!gameWon && !gameOver) statusSpan.textContent = '▶ Jogando'; }, 800);
                 }
@@ -1241,13 +1291,26 @@
                 }
             }
 
+            for (let i = enemyProjectiles.length - 1; i >= 0; i--) {
+                const ep = enemyProjectiles[i];
+                if (!ep.alive) continue;
+                if (this.x + this.w > ep.x + 4 && this.x < ep.x + ep.w - 4 &&
+                    this.y + this.h > ep.y + 4 && this.y < ep.y + ep.h - 4) {
+                    if (!this.invincible) {
+                        this.die();
+                        ep.alive = false;
+                    }
+                }
+            }
+
             if (!levelComplete && this.x + this.w > FLAG_X && this.x < FLAG_X + 30 && this.y + this.h > FLAG_Y + 10) {
                 levelComplete = true;
-                sound.playSound('levelComplete');
+                sound.playSound('victory');
                 emitParticles(FLAG_X + 15, FLAG_Y + 20, 40, {
-                    color: '#ffffff', radius: 6, speed: 5, life: 40, gravity: 0.01, vy: -3, type: 'star'
+                    color: '#88ddff', radius: 6, speed: 5, life: 40, gravity: -0.01, vy: -3, type: 'star'
                 });
                 statusSpan.textContent = '⭐ Fase concluída!';
+                gameWon = true;
                 nextLevelTimer = 120;
             }
 
@@ -1276,7 +1339,7 @@
             this.shootCooldown = 18;
             sound.playSound('shoot');
             emitParticles(this.x + (this.facing === 1 ? this.w : 0), this.y + 12, 8, {
-                color: '#ff8800', radius: 3, speed: 3, life: 15, gravity: 0.02, vx: this.facing * 2, vy: -1, type: 'spark'
+                color: '#ff8800', radius: 3, speed: 3, life: 15, gravity: -0.02, vx: this.facing * 2, vy: -1, type: 'star'
             });
             if (navigator.vibrate) navigator.vibrate(15);
             return true;
@@ -1437,64 +1500,46 @@
     }
 
     // ================================================================
-    //  CLASSE ENEMY (com 'bear', 'plant', 'mushroom')
+    //  CLASSES ENEMY (yeti, pingüim, bola de neve)
     // ================================================================
     class Enemy {
         constructor(x, y, type) {
-            this.x = x; this.y = y; this.type = type || 'standard';
-            this.w = 30; this.h = 32;
-            this.vx = -1.2;
+            this.x = x; this.y = y; this.type = type || 'yeti';
+            this.w = 30; this.h = 34;
+            this.vx = -1.0;
             this.alive = true;
             this.squished = false;
             this.squishTimer = 0;
             this.animFrame = 0;
             this.animTimer = 0;
-            this.plantTimer = 0;
-            this.birdY = y;
-            this.birdPhase = Math.random() * Math.PI * 2;
-            this.mushroomJump = 0;
-            this.bearCharge = 0;
-            this.ghostPhase = Math.random() * Math.PI * 2;
-            this.ghostFlicker = 0;
-            this.firePhase = Math.random() * Math.PI * 2;
-            this.bearSpeed = 1.8;
-            this.bearTimer = 0;
-            this.mushroomPhase = Math.random() * Math.PI * 2;
+            this.batY = y;
+            this.phase = Math.random() * Math.PI * 2;
+            this.shootCooldown = 0;
+            this.type = type;
         }
-        hasGroundAt(x, y) {
-            for (const seg of groundSegments) {
-                if (x > seg.x && x < seg.x + seg.w && y >= seg.y && y < seg.y + seg.h + 5) return true;
-            }
-            for (const plat of platforms) {
-                if (x > plat.x && x < plat.x + plat.w && y >= plat.y && y < plat.y + plat.h + 5) return true;
-            }
-            for (const mplat of movingPlatforms) {
-                if (x > mplat.x && x < mplat.x + mplat.w && y >= mplat.y && y < mplat.y + mplat.h + 5) return true;
-            }
-            return false;
-        }
+
         update() {
             if (!this.alive) {
                 if (this.squished) { this.squishTimer--; if (this.squishTimer <= 0) return false; }
                 return true;
             }
+            if (this.shootCooldown > 0) this.shootCooldown--;
+
             switch (this.type) {
-                case 'standard': return this.updateStandard();
-                case 'bear': return this.updateBear();
-                case 'plant': return this.updatePlant();
-                case 'mushroom': return this.updateMushroom();
-                default: return this.updateStandard();
+                case 'yeti': return this.updateYeti();
+                case 'penguin': return this.updatePenguin();
+                case 'iceball': return this.updateIceball();
+                default: return this.updateYeti();
             }
         }
-        updateStandard() {
-            const checkX = this.x + (this.vx > 0 ? this.w + 2 : -2);
-            const checkY = this.y + this.h + 2;
-            if (!this.hasGroundAt(checkX, checkY)) this.vx *= -1;
-            this.x += this.vx;
+
+        updateYeti() {
+            this.phase += 0.04;
+            this.x += this.vx * 0.4;
             let onGround = false;
             for (const seg of groundSegments) {
-                if (this.x + this.w > seg.x + 4 && this.x < seg.x + seg.w - 4) {
-                    if (this.y + this.h > seg.y && this.y + this.h < seg.y + seg.h + 8) {
+                if (this.x + this.w > seg.x && this.x < seg.x + seg.w) {
+                    if (this.y + this.h >= seg.y && this.y + this.h < seg.y + seg.h + 6) {
                         onGround = true;
                         this.y = seg.y - this.h;
                         break;
@@ -1503,225 +1548,296 @@
             }
             if (!onGround) {
                 for (const plat of platforms) {
-                    if (this.x + this.w > plat.x + 4 && this.x < plat.x + plat.w - 4) {
-                        if (this.y + this.h > plat.y && this.y + this.h < plat.y + plat.h + 8) {
+                    if (this.x + this.w > plat.x && this.x < plat.x + plat.w) {
+                        if (this.y + this.h >= plat.y && this.y + this.h < plat.y + plat.h + 6) {
                             onGround = true;
                             this.y = plat.y - this.h;
                             break;
                         }
                     }
                 }
+                if (!onGround) {
+                    this.vy = (this.vy || 0) + 0.3;
+                    this.y += this.vy;
+                } else {
+                    this.vy = 0;
+                }
+            } else {
+                this.vy = 0;
             }
-            if (!onGround) this.y += 2;
-            if (this.x < 0) this.x = 0;
-            if (this.x + this.w > LEVEL_WIDTH) this.x = LEVEL_WIDTH - this.w;
-            if (this.y > H + 50) return false;
+            if (this.x < 0 || this.x + this.w > LEVEL_WIDTH) this.vx *= -1;
+            this.animTimer++;
+            if (this.animTimer > 10) { this.animTimer = 0; this.animFrame = (this.animFrame + 1) % 2; }
+
+            // arremessa bolas de neve
+            if (this.shootCooldown <= 0 && Math.abs(this.x - player.x) < 450) {
+                const dx = player.x - this.x;
+                const dy = player.y - this.y - 10;
+                const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                const speed = 2.2;
+                const ep = new EnemyProjectile(
+                    this.x + this.w / 2,
+                    this.y,
+                    (dx / dist) * speed,
+                    (dy / dist) * speed,
+                    '#88ddff'
+                );
+                enemyProjectiles.push(ep);
+                this.shootCooldown = 80;
+                sound.playSound('yeti');
+                emitParticles(this.x + this.w / 2, this.y, 6, {
+                    color: '#88ddff', radius: 3, speed: 2, life: 15, gravity: -0.02, vy: -1, type: 'snow'
+                });
+            }
+            return true;
+        }
+
+        updatePenguin() {
+            this.phase += 0.05;
+            this.x += this.vx * 0.6;
+            let onGround = false;
+            for (const seg of groundSegments) {
+                if (this.x + this.w > seg.x && this.x < seg.x + seg.w) {
+                    if (this.y + this.h >= seg.y && this.y + this.h < seg.y + seg.h + 6) {
+                        onGround = true;
+                        this.y = seg.y - this.h;
+                        break;
+                    }
+                }
+            }
+            if (!onGround) {
+                for (const plat of platforms) {
+                    if (this.x + this.w > plat.x && this.x < plat.x + plat.w) {
+                        if (this.y + this.h >= plat.y && this.y + this.h < plat.y + plat.h + 6) {
+                            onGround = true;
+                            this.y = plat.y - this.h;
+                            break;
+                        }
+                    }
+                }
+                if (!onGround) {
+                    this.vy = (this.vy || 0) + 0.3;
+                    this.y += this.vy;
+                } else {
+                    this.vy = 0;
+                }
+            } else {
+                this.vy = 0;
+            }
+            if (this.x < 0 || this.x + this.w > LEVEL_WIDTH) this.vx *= -1;
             this.animTimer++;
             if (this.animTimer > 8) { this.animTimer = 0; this.animFrame = (this.animFrame + 1) % 2; }
             return true;
         }
-        updateBear() {
-            this.bearTimer++;
-            const checkX = this.x + (this.vx > 0 ? this.w + 4 : -4);
-            const checkY = this.y + this.h + 2;
-            if (!this.hasGroundAt(checkX, checkY) || this.x < 0 || this.x + this.w > LEVEL_WIDTH) {
-                this.vx *= -1;
-            }
-            this.x += this.vx * 1.5;
-            let onGround = false;
-            for (const seg of groundSegments) {
-                if (this.x + this.w > seg.x + 4 && this.x < seg.x + seg.w - 4) {
-                    if (this.y + this.h > seg.y && this.y + this.h < seg.y + seg.h + 8) {
-                        onGround = true;
-                        this.y = seg.y - this.h;
-                        break;
-                    }
-                }
-            }
-            if (!onGround) {
-                for (const plat of platforms) {
-                    if (this.x + this.w > plat.x + 4 && this.x < plat.x + plat.w - 4) {
-                        if (this.y + this.h > plat.y && this.y + this.h < plat.y + plat.h + 8) {
-                            onGround = true;
-                            this.y = plat.y - this.h;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (!onGround) this.y += 3;
-            if (this.y > H + 50) return false;
+
+        updateIceball() {
+            this.phase += 0.06;
+            this.x += this.vx * 0.8;
+            this.y = this.batY + Math.sin(this.phase) * 35;
+            if (this.x < 0 || this.x + this.w > LEVEL_WIDTH) this.vx *= -1;
             this.animTimer++;
             if (this.animTimer > 6) { this.animTimer = 0; this.animFrame = (this.animFrame + 1) % 2; }
             return true;
         }
-        updatePlant() {
-            this.plantTimer++;
-            if (this.plantTimer > 80) this.plantTimer = 0;
-            return true;
-        }
-        updateMushroom() {
-            this.mushroomPhase += 0.05;
-            this.x += this.vx * 0.6;
-            if (this.x < 0 || this.x + this.w > LEVEL_WIDTH) this.vx *= -1;
-            this.y = this.birdY + Math.sin(this.mushroomPhase) * 15;
-            this.animTimer++;
-            if (this.animTimer > 5) { this.animTimer = 0; this.animFrame = (this.animFrame + 1) % 2; }
-            return true;
-        }
+
         squish() {
             this.alive = false;
             this.squished = true;
             this.squishTimer = 20;
             this.h = 12;
-            this.y += 20;
-            const bonus = this.type === 'bear' ? 200 : this.type === 'mushroom' ? 150 : 100;
+            this.y += 22;
+            const bonus = this.type === 'yeti' ? 300 : this.type === 'iceball' ? 200 : 150;
             score += bonus;
             sound.playSound('squish');
-            const color = this.type === 'bear' ? '#8d6e63' : this.type === 'mushroom' ? '#e67e22' : '#ffaa00';
-            emitParticles(this.x + this.w/2, this.y + this.h/2, 15, {
-                color: color, radius: 4, speed: 3, life: 20, gravity: 0.05, vy: -1, type: 'star'
+            const color = this.type === 'yeti' ? '#6a8a9a' : this.type === 'iceball' ? '#88ddff' : '#4a7a8a';
+            emitParticles(this.x + this.w/2, this.y + this.h/2, 20, {
+                color: color, radius: 5, speed: 4, life: 25, gravity: -0.02, vy: -1.5, type: 'snow'
             });
-            if (this.type === 'bear') sound.playSound('bear');
-            else if (this.type === 'plant') sound.playSound('plant');
-            else if (this.type === 'mushroom') sound.playSound('mushroom');
+            if (this.type === 'yeti') sound.playSound('yeti');
+            else if (this.type === 'iceball') sound.playSound('ice');
+            else if (this.type === 'penguin') sound.playSound('penguin');
             updateUI();
         }
+
         draw(ctx, offsetX) {
             if (!this.alive && !this.squished) return;
             const sx = this.x - offsetX, sy = this.y;
             if (this.squished) {
-                ctx.fillStyle = '#4a4a4a';
+                ctx.fillStyle = '#4a6a7a';
                 ctx.fillRect(sx, sy + 10, this.w, 12);
-                ctx.fillStyle = '#2a2a2a';
+                ctx.fillStyle = '#2a4a5a';
                 ctx.fillRect(sx + 4, sy + 14, 4, 4);
-                ctx.fillRect(sx + 22, sy + 14, 4, 4);
+                ctx.fillRect(sx + 20, sy + 14, 4, 4);
                 return;
             }
             ctx.shadowColor = 'rgba(0,0,0,0.2)';
             ctx.shadowBlur = 8;
             ctx.shadowOffsetY = 3;
 
-            if (this.type === 'bear') {
-                ctx.fillStyle = '#6d4c41';
-                ctx.shadowBlur = 10;
-                ctx.beginPath();
-                ctx.ellipse(sx + 15, sy + 16, 14, 14, 0, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.fillStyle = '#4e342e';
-                ctx.fillRect(sx + 2, sy + 6, 26, 8);
-                ctx.fillStyle = '#5d4037';
-                ctx.beginPath();
-                ctx.arc(sx + 6, sy + 2, 6, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(sx + 24, sy + 2, 6, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.fillStyle = '#3e2723';
-                ctx.beginPath();
-                ctx.arc(sx + 6, sy + 2, 3, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(sx + 24, sy + 2, 3, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.fillStyle = '#fff';
-                ctx.shadowBlur = 0;
-                ctx.fillRect(sx + 8, sy + 10, 6, 6);
-                ctx.fillRect(sx + 16, sy + 10, 6, 6);
-                ctx.fillStyle = '#1a1a2e';
-                const eyeOff = this.vx > 0 ? 3 : 0;
-                ctx.fillRect(sx + 10 + eyeOff, sy + 12, 3, 3);
-                ctx.fillRect(sx + 18 + eyeOff, sy + 12, 3, 3);
-                ctx.fillStyle = '#3e2723';
-                ctx.fillRect(sx + 10, sy + 20, 10, 4);
-            } else if (this.type === 'plant') {
-                const open = this.plantTimer < 40;
-                ctx.fillStyle = '#2e7d32';
-                ctx.fillRect(sx + 12, sy + 16, 6, 16);
-                ctx.fillStyle = '#4caf50';
-                ctx.shadowBlur = 8;
-                ctx.beginPath();
-                ctx.arc(sx + 15, sy + 14, 10, 0, Math.PI * 2);
-                ctx.fill();
-                if (open) {
-                    ctx.fillStyle = '#e74c3c';
-                    for (let i = 0; i < 5; i++) {
-                        const angle = i * (Math.PI * 2 / 5) + this.plantTimer * 0.05;
-                        const px = sx + 15 + Math.cos(angle) * 12;
-                        const py = sy + 14 + Math.sin(angle) * 12;
-                        ctx.beginPath();
-                        ctx.arc(px, py, 5, 0, Math.PI * 2);
-                        ctx.fill();
-                    }
-                    ctx.fillStyle = '#f1c40f';
-                    ctx.shadowColor = '#f1c40f';
-                    ctx.shadowBlur = 15;
-                    ctx.beginPath();
-                    ctx.arc(sx + 15, sy + 14, 4, 0, Math.PI * 2);
-                    ctx.fill();
-                } else {
-                    ctx.fillStyle = '#c0392b';
-                    ctx.beginPath();
-                    ctx.arc(sx + 15, sy + 14, 6, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-                ctx.shadowBlur = 0;
-            } else if (this.type === 'mushroom') {
-                ctx.fillStyle = '#e67e22';
-                ctx.shadowBlur = 10;
-                ctx.beginPath();
-                ctx.ellipse(sx + 15, sy + 14, 12, 8, 0, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.fillStyle = '#d35400';
-                ctx.fillRect(sx + 10, sy + 8, 10, 6);
-                ctx.fillStyle = '#fff';
-                ctx.shadowBlur = 0;
-                ctx.fillRect(sx + 4, sy + 10, 6, 4);
-                ctx.fillRect(sx + 20, sy + 10, 6, 4);
-                ctx.fillStyle = '#1a1a2e';
-                ctx.fillRect(sx + 6, sy + 12, 3, 2);
-                ctx.fillRect(sx + 22, sy + 12, 3, 2);
-                const legOff = Math.sin(this.mushroomPhase) * 4;
-                ctx.fillStyle = '#d35400';
-                ctx.fillRect(sx + 4, sy + 22 + legOff, 6, 8);
-                ctx.fillRect(sx + 20, sy + 22 - legOff, 6, 8);
-            } else {
-                const grad = ctx.createRadialGradient(sx + 8, sy + 8, 4, sx + 15, sy + 16, 22);
-                grad.addColorStop(0, '#a67c6b');
-                grad.addColorStop(1, '#6d4c41');
-                ctx.fillStyle = grad;
+            if (this.type === 'yeti') {
+                // Corpo
+                ctx.fillStyle = '#6a8a9a';
+                ctx.shadowColor = '#6a8a9a';
+                ctx.shadowBlur = 12;
                 ctx.beginPath();
                 ctx.ellipse(sx + 15, sy + 16, 14, 16, 0, 0, Math.PI * 2);
                 ctx.fill();
-                ctx.fillStyle = '#5d4037';
+                // Cabeça
                 ctx.beginPath();
-                ctx.ellipse(sx + 15, sy + 8, 12, 10, 0, 0, Math.PI * 2);
+                ctx.arc(sx + 15, sy + 6, 10, 0, Math.PI * 2);
                 ctx.fill();
+                // Olhos
                 ctx.fillStyle = '#fff';
                 ctx.shadowBlur = 0;
-                ctx.fillRect(sx + 6, sy + 6, 8, 8);
-                ctx.fillRect(sx + 16, sy + 6, 8, 8);
+                ctx.fillRect(sx + 6, sy + 4, 6, 6);
+                ctx.fillRect(sx + 18, sy + 4, 6, 6);
                 ctx.fillStyle = '#1a1a2e';
-                const eyeOff = this.vx > 0 ? 3 : 0;
-                ctx.fillRect(sx + 8 + eyeOff, sy + 8, 4, 5);
-                ctx.fillRect(sx + 18 + eyeOff, sy + 8, 4, 5);
-                ctx.fillStyle = '#3e2723';
-                ctx.fillRect(sx + 4, sy + 4, 10, 2);
-                ctx.fillRect(sx + 16, sy + 4, 10, 2);
-                ctx.fillRect(sx + 8, sy + 20, 14, 3);
-                ctx.fillRect(sx + 6, sy + 20, 3, 4);
-                ctx.fillRect(sx + 21, sy + 20, 3, 4);
-                ctx.fillStyle = '#4e342e';
-                ctx.fillRect(sx + 2, sy + 30, 8, 4);
-                ctx.fillRect(sx + 20, sy + 30, 8, 4);
+                ctx.fillRect(sx + 8, sy + 6, 3, 3);
+                ctx.fillRect(sx + 20, sy + 6, 3, 3);
+                // Braços
+                ctx.fillStyle = '#5a7a8a';
+                ctx.shadowBlur = 4;
+                ctx.fillRect(sx + 2, sy + 10, 6, 10);
+                ctx.fillRect(sx + 22, sy + 10, 6, 10);
+                // Pernas
+                ctx.fillRect(sx + 6, sy + 28, 6, 8);
+                ctx.fillRect(sx + 18, sy + 28, 6, 8);
+                ctx.shadowBlur = 0;
+            } else if (this.type === 'penguin') {
+                ctx.fillStyle = '#2a3a4a';
+                ctx.shadowColor = '#2a3a4a';
+                ctx.shadowBlur = 10;
+                ctx.beginPath();
+                ctx.ellipse(sx + 15, sy + 14, 12, 14, 0, 0, Math.PI * 2);
+                ctx.fill();
+                // Barriga branca
+                ctx.fillStyle = '#ccddff';
+                ctx.shadowBlur = 4;
+                ctx.beginPath();
+                ctx.ellipse(sx + 15, sy + 16, 8, 10, 0, 0, Math.PI * 2);
+                ctx.fill();
+                // Olhos
+                ctx.fillStyle = '#fff';
+                ctx.shadowBlur = 0;
+                ctx.fillRect(sx + 8, sy + 6, 5, 5);
+                ctx.fillRect(sx + 17, sy + 6, 5, 5);
+                ctx.fillStyle = '#1a1a2e';
+                ctx.fillRect(sx + 9, sy + 8, 2, 2);
+                ctx.fillRect(sx + 18, sy + 8, 2, 2);
+                // Bico
+                ctx.fillStyle = '#f39c12';
+                ctx.beginPath();
+                ctx.moveTo(sx + 12, sy + 10);
+                ctx.lineTo(sx + 18, sy + 10);
+                ctx.lineTo(sx + 15, sy + 13);
+                ctx.fill();
+                // Asas
+                ctx.fillStyle = '#1a2a3a';
+                ctx.fillRect(sx + 2, sy + 10, 4, 8);
+                ctx.fillRect(sx + 24, sy + 10, 4, 8);
+                ctx.shadowBlur = 0;
+            } else if (this.type === 'iceball') {
+                ctx.fillStyle = '#88ddff';
+                ctx.shadowColor = '#88ddff';
+                ctx.shadowBlur = 20;
+                ctx.beginPath();
+                ctx.arc(sx + 15, sy + 12, 14, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#aaddff';
+                ctx.shadowBlur = 10;
+                ctx.beginPath();
+                ctx.arc(sx + 10, sy + 8, 6, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#1a1a2e';
+                ctx.shadowBlur = 0;
+                ctx.fillRect(sx + 8, sy + 8, 4, 4);
+                ctx.fillRect(sx + 18, sy + 8, 4, 4);
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(sx + 9, sy + 9, 2, 2);
+                ctx.fillRect(sx + 19, sy + 9, 2, 2);
+                ctx.shadowBlur = 0;
             }
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetY = 0;
         }
     }
 
     // ================================================================
-    //  CLASSES POWERUP E PROJECTILE (idênticas)
+    //  CLASSE ENEMY PROJECTILE (bola de neve)
+    // ================================================================
+    class EnemyProjectile {
+        constructor(x, y, vx, vy, color = '#88ddff') {
+            this.x = x; this.y = y; this.w = 10; this.h = 10;
+            this.vx = vx; this.vy = vy;
+            this.alive = true; this.life = 80;
+            this.trail = [];
+            this.color = color;
+        }
+        update() {
+            if (!this.alive) return false;
+            this.x += this.vx;
+            this.y += this.vy;
+            this.life--;
+            this.trail.push({x: this.x, y: this.y});
+            if (this.trail.length > 6) this.trail.shift();
+            for (const seg of groundSegments) {
+                if (this.x + this.w > seg.x && this.x < seg.x + seg.w) {
+                    if (this.y + this.h > seg.y && this.y + this.h < seg.y + seg.h + 6) {
+                        this.alive = false;
+                        emitParticles(this.x, this.y, 8, {
+                            color: this.color, radius: 3, speed: 2, life: 15, gravity: -0.02, vy: -1, type: 'snow'
+                        });
+                        return false;
+                    }
+                }
+            }
+            for (const plat of platforms) {
+                if (this.x + this.w > plat.x && this.x < plat.x + plat.w) {
+                    if (this.y + this.h > plat.y && this.y + this.h < plat.y + plat.h + 6) {
+                        this.alive = false; return false;
+                    }
+                }
+            }
+            for (const mplat of movingPlatforms) {
+                if (this.x + this.w > mplat.x && this.x < mplat.x + mplat.w) {
+                    if (this.y + this.h > mplat.y && this.y + this.h < mplat.y + mplat.h + 6) {
+                        this.alive = false; return false;
+                    }
+                }
+            }
+            if (this.x < -20 || this.x > LEVEL_WIDTH + 20 || this.y > H + 20 || this.life <= 0) {
+                this.alive = false; return false;
+            }
+            return true;
+        }
+        draw(ctx, offsetX) {
+            if (!this.alive) return;
+            const sx = this.x - offsetX, sy = this.y;
+            for (let i = 0; i < this.trail.length; i++) {
+                const alpha = i / this.trail.length * 0.5;
+                ctx.fillStyle = this.color + Math.floor(alpha * 80).toString(16).padStart(2, '0');
+                const r = 2 + (i / this.trail.length) * 3;
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = this.color;
+                ctx.beginPath();
+                ctx.arc(this.trail[i].x - offsetX, this.trail[i].y, r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 15;
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(sx + 5, sy + 5, 6, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowBlur = 0;
+            ctx.beginPath();
+            ctx.arc(sx + 5, sy + 5, 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+    }
+
+    // ================================================================
+    //  CLASSES POWERUP E PROJECTILE
     // ================================================================
     class PowerUp {
         constructor(x, y, type) {
@@ -1747,6 +1863,13 @@
                     }
                 }
             }
+            for (const mplat of movingPlatforms) {
+                if (this.x + this.w > mplat.x + 4 && this.x < mplat.x + mplat.w - 4) {
+                    if (this.y + this.h > mplat.y && this.y + this.h < mplat.y + mplat.h + 8) {
+                        this.y = mplat.y - this.h; this.vy = 0; this.onGround = true;
+                    }
+                }
+            }
             if (this.y > H + 50) return false;
             if (this.onGround) {
                 this.bobPhase += 0.04;
@@ -1757,8 +1880,8 @@
         draw(ctx, offsetX) {
             const sx = this.x - offsetX, sy = this.y;
             const glow = ctx.createRadialGradient(sx + 12, sy + 14, 2, sx + 12, sy + 14, 25);
-            glow.addColorStop(0, 'rgba(255,200,50,0.3)');
-            glow.addColorStop(1, 'rgba(255,200,50,0)');
+            glow.addColorStop(0, 'rgba(100,200,255,0.3)');
+            glow.addColorStop(1, 'rgba(100,200,255,0)');
             ctx.fillStyle = glow;
             ctx.beginPath();
             ctx.arc(sx + 12, sy + 14, 25, 0, Math.PI * 2);
@@ -1870,6 +1993,13 @@
                     }
                 }
             }
+            for (const mplat of movingPlatforms) {
+                if (this.x + this.w > mplat.x && this.x < mplat.x + mplat.w) {
+                    if (this.y + this.h > mplat.y && this.y + this.h < mplat.y + mplat.h + 6) {
+                        this.alive = false; return false;
+                    }
+                }
+            }
             if (this.x < 0 || this.x > LEVEL_WIDTH || this.y > H + 20 || this.life <= 0) {
                 this.alive = false; return false;
             }
@@ -1918,20 +2048,21 @@
     }
 
     function loadGame() {
-        console.log('🌳 Carregando Fase 5 - Floresta Densas (SNES Style)');
+        console.log('⭐ Carregando Fase 15 - Estrela do Norte');
         coins = coinsData.map(c => ({ ...c }));
         checkpoints = checkpointsData.map(c => ({ ...c, active: false }));
         powerUps = [];
         projectiles = [];
+        enemyProjectiles = [];
         particles = [];
         checkpointX = -1;
         checkpointY = -1;
 
         player = new Player();
         player.x = 60;
-        player.y = groundSegments[0].y - player.h;
+        player.y = GROUND_Y - 40;
 
-        enemies = enemyData.map(e => new Enemy(e.x, e.y, e.type || 'standard'));
+        enemies = enemyData.map(e => new Enemy(e.x, e.y, e.type || 'yeti'));
 
         score = 0;
         lives = 3;
@@ -1955,7 +2086,7 @@
         capeBadge.innerHTML = '<span class="icon">🦅</span> ' + (player && player.hasCape ? 'SIM' : '❌');
         starBadge.innerHTML = '<span class="icon">✨</span> ' + (player && player.invincible ? (player.invincibleTimer/60).toFixed(1)+'s' : '❌');
         coinCountSpan.textContent = totalCoins;
-        if (gameWon) statusSpan.textContent = '🏆 VENCEU!';
+        if (gameWon) statusSpan.textContent = '⭐ VITÓRIA!';
         else if (gameOver || lives <= 0) statusSpan.textContent = '💀 GAME OVER';
         else if (levelComplete) statusSpan.textContent = '⭐ Fase concluída!';
         else if (paused) statusSpan.textContent = '⏸️ Pausado';
@@ -2176,7 +2307,7 @@
                     score += 150;
                     updateUI();
                     emitParticles(enemy.x + enemy.w/2, enemy.y + enemy.h/2, 20, {
-                        color: '#ff8800', radius: 4, speed: 4, life: 25, gravity: 0.03, vy: -1.5, type: 'spark'
+                        color: '#ff8800', radius: 4, speed: 4, life: 25, gravity: -0.02, vy: -1.5, type: 'star'
                     });
                     break;
                 }
@@ -2192,69 +2323,74 @@
     }
 
     // ================================================================
-    //  DESENHO DO CENÁRIO (Floresta - cores SNES)
+    //  DESENHO DO CENÁRIO (Estrela do Norte)
     // ================================================================
     function drawBackground() {
         const grad = ctx.createLinearGradient(0, 0, 0, H);
-        grad.addColorStop(0, COLORS.skyTop);
-        grad.addColorStop(1, COLORS.skyBottom);
+        grad.addColorStop(0, '#0a1a3a');
+        grad.addColorStop(0.4, '#0a2a5a');
+        grad.addColorStop(0.8, '#1a4a7a');
+        grad.addColorStop(1, '#2a5a8a');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, W, H);
 
-        // Árvores
-        const trees = [
-            { x: 50, h: 120, s: 1.2 }, { x: 200, h: 90, s: 0.9 },
-            { x: 400, h: 140, s: 1.4 }, { x: 600, h: 100, s: 1.0 },
-            { x: 800, h: 130, s: 1.3 }, { x: 1000, h: 95, s: 0.95 },
-            { x: 1200, h: 150, s: 1.5 }, { x: 1400, h: 110, s: 1.1 },
-            { x: 1600, h: 125, s: 1.25 }, { x: 1800, h: 105, s: 1.05 },
-            { x: 2000, h: 135, s: 1.35 }, { x: 2200, h: 115, s: 1.15 },
-            { x: 2400, h: 145, s: 1.45 }, { x: 2600, h: 100, s: 1.0 },
-            { x: 2800, h: 130, s: 1.3 }, { x: 3000, h: 120, s: 1.2 },
-            { x: 3200, h: 140, s: 1.4 }, { x: 3400, h: 110, s: 1.1 },
-            { x: 3600, h: 125, s: 1.25 },
-        ];
-        const scroll = camera.x * 0.15;
-        for (const t of trees) {
-            const sx = ((t.x - scroll) % (W + 200) + W + 200) % (W + 200) - 100;
-            const sy = GROUND_Y - t.h * 0.3;
-            ctx.fillStyle = 'rgba(30, 50, 30, 0.4)';
-            ctx.fillRect(sx + 10 * t.s, sy, 8 * t.s, t.h * t.s);
-            ctx.fillStyle = 'rgba(40, 80, 40, 0.3)';
+        // Estrelas
+        drawStars(camera.x);
+
+        // Aurora
+        drawAurora(camera.x);
+
+        // Neve
+        drawSnow(camera.x);
+
+        // Picos de montanha ao fundo
+        ctx.fillStyle = 'rgba(60, 80, 110, 0.15)';
+        for (let i = 0; i < 8; i++) {
+            const x = (i * 180 - camera.x * 0.08) % (W + 200) - 100;
+            const h = 40 + Math.sin(i * 1.5) * 25;
             ctx.beginPath();
-            ctx.arc(sx + 14 * t.s, sy - 10 * t.s, 30 * t.s, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(sx - 6 * t.s, sy + 10 * t.s, 25 * t.s, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(sx + 34 * t.s, sy + 8 * t.s, 28 * t.s, 0, Math.PI * 2);
+            ctx.moveTo(x, 180);
+            ctx.lineTo(x + 60, 180 - h);
+            ctx.lineTo(x + 120, 180);
             ctx.fill();
         }
-        ctx.shadowBlur = 0;
+
+        // Montes de neve ao fundo
+        ctx.fillStyle = 'rgba(100, 140, 180, 0.1)';
+        for (let i = 0; i < 10; i++) {
+            const x = (i * 150 - camera.x * 0.05) % (W + 200) - 100;
+            const y = 200 + Math.sin(i * 0.7) * 30;
+            ctx.beginPath();
+            ctx.ellipse(x, y, 80, 30, 0, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }
 
     function drawGround() {
         for (const seg of groundSegments) {
             const sx = seg.x - camera.x;
             if (sx + seg.w < -20 || sx > W + 20) continue;
-            ctx.fillStyle = COLORS.groundTop;
+            ctx.fillStyle = '#4a7a9a';
             ctx.shadowBlur = 10;
-            ctx.shadowColor = 'rgba(0,0,0,0.3)';
-            ctx.fillRect(sx, seg.y, seg.w, 8);
+            ctx.shadowColor = 'rgba(0,0,0,0.2)';
+            ctx.fillRect(sx, seg.y, seg.w, 6);
             ctx.shadowBlur = 0;
-            const grad = ctx.createLinearGradient(0, seg.y + 8, 0, seg.y + seg.h);
-            grad.addColorStop(0, COLORS.groundBody1);
-            grad.addColorStop(1, COLORS.groundBody2);
+            const grad = ctx.createLinearGradient(0, seg.y + 6, 0, seg.y + seg.h);
+            grad.addColorStop(0, '#2a5a7a');
+            grad.addColorStop(1, '#1a3a5a');
             ctx.fillStyle = grad;
-            ctx.fillRect(sx, seg.y + 8, seg.w, seg.h - 8);
-            ctx.fillStyle = 'rgba(50, 120, 50, 0.3)';
-            for (let i = 0; i < seg.w; i += 6) {
-                const gh = 3 + Math.sin(i * 0.7 + seg.x) * 2;
-                ctx.fillRect(sx + i, seg.y - gh + 4, 2, gh);
+            ctx.fillRect(sx, seg.y + 6, seg.w, seg.h - 6);
+            ctx.fillStyle = 'rgba(80, 150, 200, 0.15)';
+            for (let i = 0; i < seg.w; i += 15) {
+                ctx.fillRect(sx + i + Math.sin(i * 0.3 + seg.x) * 4, seg.y + 8 + Math.sin(i * 0.5) * 6, 4, 8);
             }
             ctx.fillStyle = 'rgba(0,0,0,0.05)';
             ctx.fillRect(sx, seg.y + seg.h - 3, seg.w, 3);
+            // Brilho do gelo
+            ctx.fillStyle = 'rgba(200, 230, 255, 0.05)';
+            for (let i = 0; i < seg.w; i += 30) {
+                ctx.fillRect(sx + i + 10, seg.y + 4, 4, 2);
+            }
         }
         ctx.shadowBlur = 0;
     }
@@ -2263,60 +2399,60 @@
         for (const plat of platforms) {
             const sx = plat.x - camera.x;
             if (sx + plat.w < -20 || sx > W + 20) continue;
-            ctx.fillStyle = COLORS.platform;
+            // Gelo translúcido
+            ctx.fillStyle = 'rgba(100, 180, 220, 0.6)';
             ctx.shadowBlur = 8;
-            ctx.shadowColor = 'rgba(0,0,0,0.3)';
+            ctx.shadowColor = 'rgba(100, 180, 220, 0.2)';
             ctx.fillRect(sx, plat.y, plat.w, plat.h);
-            ctx.fillStyle = COLORS.platformDark;
+            ctx.fillStyle = 'rgba(150, 210, 240, 0.3)';
             ctx.fillRect(sx, plat.y + plat.h - 4, plat.w, 4);
-            ctx.fillStyle = '#5a4a3a';
+            ctx.fillStyle = 'rgba(200, 240, 255, 0.2)';
             ctx.fillRect(sx, plat.y, plat.w, 3);
-            for (let i = 0; i < plat.w; i += 20) {
-                ctx.fillStyle = '#2a1a0a';
-                ctx.fillRect(sx + i, plat.y + 4, 1, plat.h - 8);
-            }
+            // Brilho
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.fillRect(sx + 4, plat.y + 2, 8, 3);
+            ctx.fillRect(sx + plat.w - 12, plat.y + 2, 8, 3);
             ctx.shadowBlur = 0;
         }
         for (const mplat of movingPlatforms) {
             const sx = mplat.x - camera.x;
             if (sx + mplat.w < -20 || sx > W + 20) continue;
-            ctx.fillStyle = COLORS.platform;
+            ctx.fillStyle = 'rgba(100, 180, 220, 0.6)';
             ctx.shadowBlur = 8;
-            ctx.shadowColor = 'rgba(0,0,0,0.3)';
+            ctx.shadowColor = 'rgba(100, 180, 220, 0.2)';
             ctx.fillRect(sx, mplat.y, mplat.w, mplat.h);
-            ctx.fillStyle = COLORS.platformDark;
+            ctx.fillStyle = 'rgba(150, 210, 240, 0.3)';
             ctx.fillRect(sx, mplat.y + mplat.h - 4, mplat.w, 4);
-            ctx.fillStyle = '#5a4a3a';
+            ctx.fillStyle = 'rgba(200, 240, 255, 0.2)';
             ctx.fillRect(sx, mplat.y, mplat.w, 3);
-            for (let i = 0; i < mplat.w; i += 20) {
-                ctx.fillStyle = '#2a1a0a';
-                ctx.fillRect(sx + i, mplat.y + 4, 1, mplat.h - 8);
-            }
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.fillRect(sx + 4, mplat.y + 2, 8, 3);
+            ctx.fillRect(sx + mplat.w - 12, mplat.y + 2, 8, 3);
             ctx.shadowBlur = 0;
         }
         for (const block of questionBlocks) {
             const sx = block.x - camera.x;
             if (sx + block.w < -20 || sx > W + 20) continue;
             if (block.used) {
-                ctx.fillStyle = COLORS.blockUsed;
+                ctx.fillStyle = '#2a4a5a';
                 ctx.shadowBlur = 6;
                 ctx.shadowColor = 'rgba(0,0,0,0.3)';
                 ctx.fillRect(sx, block.y, block.w, block.h);
-                ctx.fillStyle = '#2a3a2a';
+                ctx.fillStyle = '#1a3a4a';
                 ctx.fillRect(sx + 2, block.y + 2, block.w - 4, block.h - 4);
                 ctx.shadowBlur = 0;
                 continue;
             }
             const grad = ctx.createLinearGradient(sx, block.y, sx, block.y + block.h);
-            grad.addColorStop(0, COLORS.blockQuestion);
-            grad.addColorStop(1, COLORS.blockQuestionDark);
+            grad.addColorStop(0, '#88ddff');
+            grad.addColorStop(1, '#55aadd');
             ctx.fillStyle = grad;
             ctx.shadowBlur = 15;
-            ctx.shadowColor = 'rgba(255,215,0,0.3)';
+            ctx.shadowColor = 'rgba(100,200,255,0.3)';
             ctx.fillRect(sx, block.y, block.w, block.h);
-            ctx.fillStyle = '#fbc02d';
+            ctx.fillStyle = '#66ccff';
             ctx.fillRect(sx + 3, block.y + 3, block.w - 6, block.h - 6);
-            ctx.fillStyle = '#f57f17';
+            ctx.fillStyle = '#55aadd';
             ctx.fillRect(sx, block.y, block.w, 2);
             ctx.fillRect(sx, block.y, 2, block.h);
             ctx.fillRect(sx + block.w - 2, block.y, 2, block.h);
@@ -2325,52 +2461,40 @@
             ctx.font = 'bold 20px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText('?', sx + block.w/2, block.y + block.h/2 + 1);
+            ctx.fillText('❄', sx + block.w/2, block.y + block.h/2 + 2);
         }
         ctx.shadowBlur = 0;
     }
 
     function drawPipes(offsetX) {
-        for (const pipe of pipes) {
-            const sx = pipe.x - offsetX;
-            if (sx + pipe.w < -20 || sx > W + 20) continue;
-            ctx.fillStyle = COLORS.pipeBody;
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = 'rgba(0,0,0,0.3)';
-            ctx.fillRect(sx + 4, pipe.y, pipe.w - 8, pipe.h);
-            ctx.fillStyle = COLORS.pipeLight;
-            ctx.fillRect(sx, pipe.y - 6, pipe.w, 8);
-            ctx.fillStyle = COLORS.pipeDark;
-            ctx.fillRect(sx + 2, pipe.y - 4, pipe.w - 4, 4);
-            ctx.fillStyle = 'rgba(0,0,0,0.3)';
-            ctx.fillRect(sx + 2, pipe.y + 4, 4, pipe.h - 8);
-            ctx.fillStyle = 'rgba(255,255,255,0.05)';
-            ctx.fillRect(sx + 6, pipe.y + 8, 4, pipe.h - 16);
-            if (pipe.type === 'entry') {
-                ctx.fillStyle = 'rgba(255,255,255,0.3)';
-                ctx.font = '14px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText('▼', sx + pipe.w/2, pipe.y - 10);
-            }
-            ctx.shadowBlur = 0;
-        }
+        // sem canos
     }
 
     function drawCoins(offsetX) {
         for (const coin of coins) {
             const sx = coin.x - offsetX;
             const sy = coin.y + Math.sin(frameCount * 0.06 + coin.x) * 2;
-            ctx.shadowColor = 'rgba(255, 215, 0, 0.4)';
+            ctx.shadowColor = 'rgba(100, 200, 255, 0.4)';
             ctx.shadowBlur = 12;
-            ctx.fillStyle = COLORS.coin;
+            ctx.fillStyle = '#88ddff';
             ctx.beginPath();
-            ctx.arc(sx + coin.w/2, sy + coin.h/2, coin.w/2, 0, Math.PI * 2);
+            // Cristal de gelo (diamante)
+            const size = coin.w / 2;
+            ctx.moveTo(sx + size, sy);
+            ctx.lineTo(sx + size * 2, sy + size);
+            ctx.lineTo(sx + size, sy + size * 2);
+            ctx.lineTo(sx, sy + size);
+            ctx.closePath();
             ctx.fill();
-            ctx.fillStyle = COLORS.coinShine;
-            ctx.font = '8px Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('$', sx + coin.w/2, sy + coin.h/2 + 1);
+            ctx.fillStyle = '#aaddff';
+            ctx.shadowBlur = 8;
+            ctx.beginPath();
+            ctx.moveTo(sx + size, sy + 2);
+            ctx.lineTo(sx + size * 1.6, sy + size);
+            ctx.lineTo(sx + size, sy + size * 1.6);
+            ctx.lineTo(sx + size * 0.4, sy + size);
+            ctx.closePath();
+            ctx.fill();
             ctx.shadowBlur = 0;
         }
     }
@@ -2379,31 +2503,39 @@
         for (const spike of spikes) {
             const sx = spike.x - camera.x, sy = spike.y;
             if (sx + spike.w < -20 || sx > W + 20) continue;
-            ctx.fillStyle = '#6b4a3a';
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = 'rgba(80,50,30,0.3)';
+            ctx.fillStyle = '#88ddff';
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = 'rgba(100,200,255,0.3)';
             ctx.beginPath();
-            ctx.moveTo(sx, sy);
-            ctx.lineTo(sx + spike.w/2, sy - spike.h);
-            ctx.lineTo(sx + spike.w, sy);
+            ctx.moveTo(sx, sy + spike.h);
+            ctx.lineTo(sx + spike.w/2, sy);
+            ctx.lineTo(sx + spike.w, sy + spike.h);
             ctx.closePath();
             ctx.fill();
-            ctx.fillStyle = '#8a6a5a';
+            ctx.fillStyle = '#aaddff';
             ctx.shadowBlur = 0;
             ctx.beginPath();
-            ctx.moveTo(sx + 2, sy - 2);
-            ctx.lineTo(sx + spike.w/2, sy - spike.h + 2);
-            ctx.lineTo(sx + spike.w - 2, sy - 2);
+            ctx.moveTo(sx + 2, sy + spike.h - 2);
+            ctx.lineTo(sx + spike.w/2, sy + 2);
+            ctx.lineTo(sx + spike.w - 2, sy + spike.h - 2);
             ctx.closePath();
+            ctx.fill();
+            // Brilho
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.beginPath();
+            ctx.moveTo(sx + spike.w/2 - 2, sy + 4);
+            ctx.lineTo(sx + spike.w/2, sy + 2);
+            ctx.lineTo(sx + spike.w/2 + 2, sy + 4);
             ctx.fill();
         }
         ctx.shadowBlur = 0;
         for (const cp of checkpoints) {
             const sx = cp.x - camera.x, sy = cp.y;
             if (sx + cp.w < -20 || sx > W + 20) continue;
-            ctx.fillStyle = cp.active ? COLORS.checkpointActive : COLORS.checkpointInactive;
+            ctx.fillStyle = cp.active ? '#2ecc71' : '#4a6a7a';
             ctx.shadowColor = cp.active ? 'rgba(46,204,113,0.6)' : 'rgba(0,0,0,0.3)';
             ctx.shadowBlur = 20;
+            ctx.fillRect(sx, sy + 10, cp.w, 10);
             ctx.beginPath();
             ctx.arc(sx + cp.w/2, sy + cp.h/2, cp.w/2, 0, Math.PI * 2);
             ctx.fill();
@@ -2420,14 +2552,14 @@
     function drawFlag() {
         const fx = FLAG_X - camera.x, fy = FLAG_Y;
         if (fx < -40 || fx > W + 40) return;
-        ctx.fillStyle = COLORS.flagPole;
+        ctx.fillStyle = '#5d4037';
         ctx.shadowBlur = 10;
         ctx.shadowColor = 'rgba(0,0,0,0.3)';
         ctx.fillRect(fx + 10, fy, 6, 90);
         ctx.fillStyle = '#8d6e63';
         ctx.fillRect(fx + 12, fy, 2, 90);
-        ctx.fillStyle = COLORS.flag;
-        ctx.shadowColor = 'rgba(241,196,15,0.5)';
+        ctx.fillStyle = '#88ddff';
+        ctx.shadowColor = 'rgba(100,200,255,0.5)';
         ctx.shadowBlur = 20;
         ctx.beginPath();
         ctx.arc(fx + 13, fy - 4, 8, 0, Math.PI * 2);
@@ -2453,7 +2585,7 @@
             ctx.moveTo(fx + 16, fy + 8);
             ctx.quadraticCurveTo(fx + 40 + wave, fy + 16, fx + 16, fy + 32);
             ctx.fill();
-            ctx.fillStyle = COLORS.flag;
+            ctx.fillStyle = '#88ddff';
             ctx.font = '14px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -2493,6 +2625,7 @@
                 enemies = enemies.filter(e => e.update());
                 powerUps = powerUps.filter(pu => pu.update());
                 projectiles = projectiles.filter(p => p.update());
+                enemyProjectiles = enemyProjectiles.filter(ep => ep.update());
                 particles = particles.filter(p => p.update());
 
                 handleEnemyCollisions();
@@ -2509,7 +2642,6 @@
 
         ctx.clearRect(0, 0, W, H);
         drawBackground();
-        drawLeaves(camera.x);
         drawGround();
         drawPlatformsAndBlocks();
         drawPipes(camera.x);
@@ -2518,6 +2650,7 @@
 
         for (const pu of powerUps) pu.draw(ctx, camera.x);
         for (const enemy of enemies) enemy.draw(ctx, camera.x);
+        for (const ep of enemyProjectiles) ep.draw(ctx, camera.x);
         for (const proj of projectiles) proj.draw(ctx, camera.x);
         if (player) player.draw(ctx, camera.x);
         drawFlag();
@@ -2527,15 +2660,15 @@
         }
 
         if (gameWon) {
-            ctx.fillStyle = 'rgba(0,0,0,0.5)';
+            ctx.fillStyle = 'rgba(0,0,0,0.4)';
             ctx.fillRect(0, 0, W, H);
-            ctx.fillStyle = '#ffd700';
+            ctx.fillStyle = '#88ddff';
             ctx.font = 'bold 52px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.shadowColor = 'rgba(0,0,0,0.6)';
-            ctx.shadowBlur = 20;
-            ctx.fillText('🏆 VITÓRIA!', W/2, H/2 - 20);
+            ctx.shadowColor = 'rgba(100,200,255,0.6)';
+            ctx.shadowBlur = 40;
+            ctx.fillText('⭐ VITÓRIA!', W/2, H/2 - 20);
             ctx.fillStyle = '#fff';
             ctx.font = '24px Arial';
             ctx.fillText('Parabéns!', W/2, H/2 + 50);
@@ -2557,7 +2690,7 @@
         } else if (levelComplete && nextLevelTimer > 0) {
             ctx.fillStyle = 'rgba(0,0,0,0.4)';
             ctx.fillRect(0, 0, W, H);
-            ctx.fillStyle = '#ffd700';
+            ctx.fillStyle = '#88ddff';
             ctx.font = 'bold 40px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -2571,7 +2704,7 @@
         } else if (paused) {
             ctx.fillStyle = 'rgba(0,0,0,0.5)';
             ctx.fillRect(0, 0, W, H);
-            ctx.fillStyle = '#ffd700';
+            ctx.fillStyle = '#88ddff';
             ctx.font = 'bold 40px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -2586,15 +2719,15 @@
         ctx.beginPath();
         ctx.roundRect(W - 170, 12, 150, 10, 6);
         ctx.fill();
-        ctx.fillStyle = '#4caf50';
+        ctx.fillStyle = '#88ddff';
         ctx.beginPath();
         ctx.roundRect(W - 170, 12, Math.max(4, progress * 150), 10, 6);
         ctx.fill();
-        ctx.fillStyle = 'rgba(255,255,255,0.6)';
+        ctx.fillStyle = 'rgba(255,255,255,0.7)';
         ctx.font = '8px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
-        ctx.fillText('PROGRESSO', W - 95, 12);
+        ctx.fillText('ESTRELA DO NORTE', W - 95, 12);
 
         requestAnimationFrame(gameLoop);
     }
@@ -2619,7 +2752,9 @@
         };
     }
 
-    initLeaves();
+    initSnow();
+    initAurora();
+    initStars();
 
     document.addEventListener('click', () => { if (!sound.initialized) sound.init(); }, { once: true });
     document.addEventListener('touchstart', () => { if (!sound.initialized) sound.init(); }, { once: true });
@@ -2630,7 +2765,7 @@
     setupVirtualControls();
     gameLoop();
 
-    console.log('🌳 Fase 5 - Floresta Densas com música nativa SNES e efeitos de folhas!');
+    console.log('⭐ Fase 15 - Estrela do Norte com música nativa SNES, neve e aurora!');
 </script>
 </body>
 </html>
