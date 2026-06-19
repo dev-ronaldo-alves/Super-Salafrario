@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Super Salafrário - Mapa</title>
-    <!-- Favicon via emoji + SVG inline (universal) -->
     <link rel="icon" href="./logo.png" type="image/png">
-     <!-- Google Fonts: Segoe UI (fallback para sistemas sem a fonte) -->
     <style>
         /* Reset e base */
         * {
@@ -27,7 +25,7 @@
             touch-action: manipulation;
         }
         .map-container {
-            max-width: 1000px;
+            max-width: 1100px;
             width: 100%;
             background: linear-gradient(145deg, #1a1f35, #0f1425);
             border-radius: 32px;
@@ -133,103 +131,41 @@
             color: #f0a500;
         }
 
-        /* Ajustes para telas muito pequenas */
+        /* Ajustes responsivos */
         @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-            .map-container {
-                padding: 16px 12px 20px;
-                border-radius: 24px;
-            }
-            .level-grid {
-                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-                gap: 10px;
-            }
-            .level-card {
-                padding: 10px 4px 8px;
-                min-height: 90px;
-                border-radius: 14px;
-            }
-            .level-card .icon {
-                font-size: 2rem;
-            }
-            .level-card .name {
-                font-size: 0.7rem;
-            }
-            .level-card .sub {
-                font-size: 0.55rem;
-                padding: 1px 8px;
-            }
-            .map-subtitle {
-                font-size: 0.75rem;
-                margin-bottom: 14px;
-                padding-bottom: 8px;
-            }
+            body { padding: 10px; }
+            .map-container { padding: 16px 12px 20px; border-radius: 24px; }
+            .level-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 10px; }
+            .level-card { padding: 10px 4px 8px; min-height: 90px; border-radius: 14px; }
+            .level-card .icon { font-size: 2rem; }
+            .level-card .name { font-size: 0.7rem; }
+            .level-card .sub { font-size: 0.55rem; padding: 1px 8px; }
+            .map-subtitle { font-size: 0.75rem; margin-bottom: 14px; padding-bottom: 8px; }
         }
-
         @media (max-width: 380px) {
-            .level-grid {
-                grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
-                gap: 8px;
-            }
-            .level-card {
-                min-height: 76px;
-                padding: 8px 2px 6px;
-            }
-            .level-card .icon {
-                font-size: 1.6rem;
-            }
-            .level-card .name {
-                font-size: 0.6rem;
-            }
-            .level-card .sub {
-                font-size: 0.5rem;
-                padding: 0 6px;
-            }
+            .level-grid { grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 8px; }
+            .level-card { min-height: 76px; padding: 8px 2px 6px; }
+            .level-card .icon { font-size: 1.6rem; }
+            .level-card .name { font-size: 0.6rem; }
+            .level-card .sub { font-size: 0.5rem; padding: 0 6px; }
         }
-
-        /* Suporte a orientação paisagem em celulares */
         @media (max-height: 500px) and (orientation: landscape) {
-            .map-container {
-                padding: 12px 18px 16px;
-            }
-            .map-title {
-                font-size: 1.8rem;
-                margin-bottom: 0;
-            }
-            .map-subtitle {
-                font-size: 0.75rem;
-                margin-bottom: 10px;
-                padding-bottom: 6px;
-            }
-            .level-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-                gap: 10px;
-            }
-            .level-card {
-                min-height: 80px;
-                padding: 8px 4px;
-            }
-            .level-card .icon {
-                font-size: 1.8rem;
-            }
-            .footer-info {
-                margin-top: 12px;
-                padding-top: 10px;
-                font-size: 0.7rem;
-            }
+            .map-container { padding: 12px 18px 16px; }
+            .map-title { font-size: 1.8rem; margin-bottom: 0; }
+            .map-subtitle { font-size: 0.75rem; margin-bottom: 10px; padding-bottom: 6px; }
+            .level-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; }
+            .level-card { min-height: 80px; padding: 8px 4px; }
+            .level-card .icon { font-size: 1.8rem; }
+            .footer-info { margin-top: 12px; padding-top: 10px; font-size: 0.7rem; }
         }
     </style>
 </head>
 <body>
     <div class="map-container">
         <h1 class="map-title">🗺️ SALAFRÁRIO</h1>
-        <p class="map-subtitle">Escolha seu destino • 15 mundos para explorar</p>
+        <p class="map-subtitle">Escolha seu destino • 26 mundos para explorar</p>
 
-        <div class="level-grid" id="levelGrid">
-            <!-- As fases serão inseridas via JavaScript -->
-        </div>
+        <div class="level-grid" id="levelGrid"></div>
 
         <div class="footer-info">
             🎮 Clique em uma fase para começar • <span>poderes</span> • <span>inimigos</span> • <span>emoção</span>
@@ -237,113 +173,38 @@
     </div>
 
     <script>
-        // Dados das fases (10 originais + 5 novas)
-        const phases = [{
-            id: 1,
-            name: 'Campo Verde',
-            icon: '🌿',
-            file: 'fase1.html',
-            unlocked: true,
-            desc: 'Início'
-        }, {
-            id: 2,
-            name: 'Deserto Árido',
-            icon: '🏜️',
-            file: 'fase2.html',
-            unlocked: true,
-            desc: 'Areia e espinhos'
-        }, {
-            id: 3,
-            name: 'Montanha Gelada',
-            icon: '❄️',
-            file: 'fase3.html',
-            unlocked: true,
-            desc: 'Gelo e pássaros'
-        }, {
-            id: 4,
-            name: 'Caverna Escura',
-            icon: '🕳️',
-            file: 'fase4.html',
-            unlocked: true,
-            desc: 'Cogumelos'
-        }, {
-            id: 5,
-            name: 'Floresta Densa',
-            icon: '🌲',
-            file: 'fase5.html',
-            unlocked: true,
-            desc: 'Ursos e plantas'
-        }, {
-            id: 6,
-            name: 'Pico Rochoso',
-            icon: '⛰️',
-            file: 'fase6.html',
-            unlocked: true,
-            desc: 'Aves e espinhos'
-        }, {
-            id: 7,
-            name: 'Castelo Medieval',
-            icon: '🏰',
-            file: 'fase7.html',
-            unlocked: true,
-            desc: 'Cogumelos e ursos'
-        }, {
-            id: 8,
-            name: 'Vulcão Ardente',
-            icon: '🌋',
-            file: 'fase8.html',
-            unlocked: true,
-            desc: 'Fogo e plantas'
-        }, {
-            id: 9,
-            name: 'Estação Espacial',
-            icon: '🚀',
-            file: 'fase9.html',
-            unlocked: true,
-            desc: 'Gravidade zero?'
-        }, {
-            id: 10,
-            name: 'Castelo Final',
-            icon: '👑',
-            file: 'fase10.html',
-            unlocked: true,
-            desc: 'O desafio final'
-        }, {
-            id: 11,
-            name: 'Planeta Água',
-            icon: '🌊',
-            file: 'fase11.html',
-            unlocked: true,
-            desc: 'Oceanos profundos'
-        }, {
-            id: 12,
-            name: 'Céu Nublado',
-            icon: '☁️',
-            file: 'fase12.html',
-            unlocked: true,
-            desc: 'Plataformas aéreas'
-        }, {
-            id: 13,
-            name: 'Templo Antigo',
-            icon: '🏛️',
-            file: 'fase13.html',
-            unlocked: true,
-            desc: 'Armadilhas e enigmas'
-        }, {
-            id: 14,
-            name: 'Masmorra Sombria',
-            icon: '💀',
-            file: 'fase14.html',
-            unlocked: true,
-            desc: 'Esqueletos e trevas'
-        }, {
-            id: 15,
-            name: 'Estrela do Norte',
-            icon: '⭐',
-            file: 'fase15.html',
-            unlocked: true,
-            desc: 'A última fronteira'
-        }];
+        // ========== 26 FASES (16 originais + 10 novas) ==========
+        const phases = [
+            // Fases 1 a 16 (já existentes)
+            { id: 1, name: 'Campo Verde', icon: '🌿', file: 'fase1.html', unlocked: true, desc: 'Início' },
+            { id: 2, name: 'Deserto Árido', icon: '🏜️', file: 'fase2.html', unlocked: true, desc: 'Areia e espinhos' },
+            { id: 3, name: 'Montanha Gelada', icon: '❄️', file: 'fase3.html', unlocked: true, desc: 'Gelo e pássaros' },
+            { id: 4, name: 'Caverna Escura', icon: '🕳️', file: 'fase4.html', unlocked: true, desc: 'Cogumelos' },
+            { id: 5, name: 'Floresta Densa', icon: '🌲', file: 'fase5.html', unlocked: true, desc: 'Ursos e plantas' },
+            { id: 6, name: 'Pico Rochoso', icon: '⛰️', file: 'fase6.html', unlocked: true, desc: 'Aves e espinhos' },
+            { id: 7, name: 'Castelo Medieval', icon: '🏰', file: 'fase7.html', unlocked: true, desc: 'Cogumelos e ursos' },
+            { id: 8, name: 'Vulcão Ardente', icon: '🌋', file: 'fase8.html', unlocked: true, desc: 'Fogo e plantas' },
+            { id: 9, name: 'Estação Espacial', icon: '🚀', file: 'fase9.html', unlocked: true, desc: 'Gravidade zero?' },
+            { id: 10, name: 'Castelo Final', icon: '👑', file: 'fase10.html', unlocked: true, desc: 'O desafio final' },
+            { id: 11, name: 'Planeta Água', icon: '🌊', file: 'fase11.html', unlocked: true, desc: 'Oceanos profundos' },
+            { id: 12, name: 'Céu Nublado', icon: '☁️', file: 'fase12.html', unlocked: true, desc: 'Plataformas aéreas' },
+            { id: 13, name: 'Templo Antigo', icon: '🏛️', file: 'fase13.html', unlocked: true, desc: 'Armadilhas e enigmas' },
+            { id: 14, name: 'Masmorra Sombria', icon: '💀', file: 'fase14.html', unlocked: true, desc: 'Esqueletos e trevas' },
+            { id: 15, name: 'Estrela do Norte', icon: '⭐', file: 'fase15.html', unlocked: true, desc: 'A última fronteira' },
+            { id: 16, name: 'Campo Verde II', icon: '🌿', file: 'fase16.html', unlocked: true, desc: 'Plantas e animais' },
+
+            // ===== NOVAS FASES (17 a 26) =====
+            { id: 17, name: 'Pântano Envenenado', icon: '🐊', file: 'fase17.html', unlocked: true, desc: 'Névoa e jacarés' },
+            { id: 18, name: 'Cidade dos Ventos', icon: '🌬️', file: 'fase18.html', unlocked: true, desc: 'Correntes e arranha-céus' },
+            { id: 19, name: 'Templo do Fogo', icon: '🔥', file: 'fase19.html', unlocked: true, desc: 'Labirinto de chamas' },
+            { id: 20, name: 'Pico Congelado', icon: '🏔️', file: 'fase20.html', unlocked: true, desc: 'Tempestade de neve' },
+            { id: 21, name: 'Caverna de Cristal', icon: '💎', file: 'fase21.html', unlocked: true, desc: 'Reflexos e armadilhas' },
+            { id: 22, name: 'Ilha dos Dinossauros', icon: '🦕', file: 'fase22.html', unlocked: true, desc: 'Criaturas pré-históricas' },
+            { id: 23, name: 'Deserto das Almas', icon: '👻', file: 'fase23.html', unlocked: true, desc: 'Fantasmas e miragens' },
+            { id: 24, name: 'Castelo do Vampiro', icon: '🧛', file: 'fase24.html', unlocked: true, desc: 'Trevas e morcegos' },
+            { id: 25, name: 'Núcleo da Terra', icon: '🌍', file: 'fase25.html', unlocked: true, desc: 'Magma e cristais' },
+            { id: 26, name: 'Planalto das Estrelas', icon: '🌌', file: 'fase26.html', unlocked: true, desc: 'Onde tudo começou' },
+        ];
 
         const grid = document.getElementById('levelGrid');
 
